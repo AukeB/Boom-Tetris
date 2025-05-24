@@ -1,0 +1,21 @@
+WINDOW:
+  WIDTH: 1920
+  HEIGHT: 1080
+  COLOR:
+    BACKGROUND: !!python/tuple [255, 255, 255]
+
+BOARD:
+  DIMENSIONS:
+    ROWS: 20
+    COLS: 10
+  RECT:
+    LEFT: 740
+    TOP: 40
+    WIDTH: 500
+    HEIGHT: 1000
+  COLOR:
+    BACKGROUND: !!python/tuple [55, 55, 55]
+
+TETROMINO:
+  SIZE: 4
+  COLOR: !!python/tuple [200, 200, 200]  
