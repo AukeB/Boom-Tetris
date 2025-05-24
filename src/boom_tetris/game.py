@@ -42,6 +42,14 @@ class Game:
         print(unique_tetrominos)
         self.tetromino = Tetromino(row=0, col=self.board.dimensions.cols // 2)
 
+    def _handle_controls(self, event) -> None:
+        """ """
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_LEFT:
+                self.tetromino.col -= 1
+            if event.key == pg.K_RIGHT:
+                self.tetromino.col += 1
+
     def handle_events(self) -> bool:
         """ """
         for event in pg.event.get():
@@ -51,7 +59,9 @@ class Game:
                 and event.key == pg.K_ESCAPE
             ):
                 return False
-
+            
+            self._handle_controls(event)
+            
         return True
 
     def update(self) -> callable:
