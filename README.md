@@ -1,3 +1,3 @@
 # Boom! Tetris!
 
-Boom! Tetri!
+Boom! Tetris!
