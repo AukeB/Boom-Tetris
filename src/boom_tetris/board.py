@@ -1,11 +1,25 @@
 """ """
 
 import itertools
-import random as rd
 import pygame as pg
 
 
 from src.boom_tetris.constants import Dimensions
+
+
+class BoardCell:
+    """ """
+
+    def __init__(
+        self,
+        row: int,
+        col: int,
+        value: int,
+    ) -> None:
+        """ """
+        self.row = row
+        self.col = col
+        self.value = value
 
 
 class Board:
@@ -20,9 +34,13 @@ class Board:
         self.dimensions = dimensions
         self.rect = rect
         self.cells: list[list[int]] = [
-            [rd.randint(0, 1) for _ in range(self.dimensions.cols)]
-            for _ in range(self.dimensions.rows)
+            [BoardCell(row, col, 0) for col in range(self.dimensions.cols)]
+            for row in range(self.dimensions.rows)
         ]
+
+        cell_width = self.rect.width // self.dimensions.cols
+        cell_height = self.rect.height // self.dimensions.rows
+        self.cell_rect = pg.Rect(self.rect.left, self.rect.top, cell_width, cell_height)
 
     def __iter__(self):
         """ """

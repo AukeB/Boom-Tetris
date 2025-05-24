@@ -3,6 +3,7 @@
 import pygame as pg
 
 from src.boom_tetris.board import Board
+from src.boom_tetris.tetromino import Tetromino
 from src.boom_tetris.renderer import Renderer
 from src.boom_tetris.constants import Dimensions
 from src.boom_tetris.config_loader import Config
@@ -18,9 +19,7 @@ class Game:
 
         pg.init()
 
-        self.renderer = Renderer(
-            config=self.config,
-        )
+        self.renderer = Renderer(config=self.config)
 
         self.board = Board(
             dimensions=Dimensions(
@@ -41,6 +40,7 @@ class Game:
 
         unique_tetrominos = tetromino_generator.generate()
         print(unique_tetrominos)
+        self.tetromino = Tetromino(row=0, col=self.board.dimensions.cols // 2)
 
     def handle_events(self) -> bool:
         """ """
@@ -58,5 +58,6 @@ class Game:
         """ """
         with self.renderer:
             self.renderer.draw_board(board=self.board)
+            self.renderer.draw_tetromino(self.tetromino, self.board.cell_rect.copy())
 
         return self.handle_events()

@@ -4,7 +4,9 @@ from collections import namedtuple
 
 MAIN_CONFIG_RELATIVE_FILE_PATH = "src/boom_tetris/configs/main_config.yaml"
 
-Position = namedtuple("Position", "x y")
+# Used for exact position, with `y` and `x` having
+# pixel number as unit.
+Position = namedtuple("Position", "y x")
 
 """
 `Dimensions` refers to the structural properties of a grid, 
@@ -17,3 +19,6 @@ Position = namedtuple("Position", "x y")
 """
 Dimensions = namedtuple("Dimensions", "cols rows")
 Size = namedtuple("Size", "width height")
+
+# Used for defining Tetromino's.
+Block = namedtuple("Block", "row col value")
