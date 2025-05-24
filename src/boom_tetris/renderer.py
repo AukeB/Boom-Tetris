@@ -65,10 +65,7 @@ class Renderer:
             x=block_rect.x + tetromino.col * block_rect.width,
         )
 
-        print(block_rect.x, tetromino.col, block_rect.width)
-
         for block in tetromino:
             block_rect.y = tetromino_position.y + block.col * block_rect.width
             block_rect.x = tetromino_position.x + block.row * block_rect.height
-            #print(block_rect)
             pg.draw.rect(self.surface, (self.config.TETROMINO.COLOR), block_rect)
