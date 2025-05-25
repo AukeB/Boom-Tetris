@@ -3,11 +3,11 @@
 import pygame as pg
 
 from src.boom_tetris.board import Board
-from src.boom_tetris.polyomino import Polyomino
+from src.boom_tetris.polyomino.polyomino import Polyomino
 from src.boom_tetris.renderer import Renderer
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import Position
-from src.boom_tetris.polyomino_generator import PolyominoGenerator
+from src.boom_tetris.polyomino.polyomino_generator import PolyominoGenerator
 
 
 class Game:
@@ -23,18 +23,20 @@ class Game:
         self.board = Board(config=self.config)
 
         polyomino_generator = PolyominoGenerator(
-            number_of_polyomino_cells=self.config.TETROMINO.SIZE
+            number_of_polyomino_cells=self.config.POLYOMINO.SIZE
         )
 
-        unique_polyominos = polyomino_generator.generate()
+        self.unique_polyominos = polyomino_generator.generate()
 
         self.polyomino = Polyomino(
-            y=0, x=self.board.dimensions.cols // 2, all_polyominos=unique_polyominos
+            y=0,
+            x=self.board.dimensions.cols // 2,
         )
 
     def handle_controls(self, event) -> None:
         """ """
         if event.type == pg.KEYDOWN:
+            # Horizontal and vertical movement.
             if event.key == pg.K_LEFT and not self.board.collision(
                 self.polyomino, move_direction=Position(0, -1)
             ):
@@ -43,15 +45,20 @@ class Game:
                 self.polyomino, move_direction=Position(0, 1)
             ):
                 self.polyomino.x += 1
-            if event.key == pg.K_DOWN and not self.board.collision(
-                self.polyomino, move_direction=Position(1, 0)
-            ):
-                self.polyomino.y += 1
             if event.key == pg.K_UP and not self.board.collision(
                 self.polyomino, move_direction=Position(-1, 0)
             ):
                 self.polyomino.y -= 1
+            if event.key == pg.K_DOWN:
+                if not self.board.collision(
+                    self.polyomino, move_direction=Position(1, 0)
+                ):
+                    self.polyomino.y += 1
+                else:
+                    self.board.place_polyomino(self.polyomino)
+                    self.next_polyomino()
 
+            # Rotational movement.
             if event.key == pg.K_a and not self.board.collision(
                 self.polyomino, rotate_direction=-1
             ):
@@ -74,6 +81,12 @@ class Game:
             self.handle_controls(event)
 
         return True
+
+    def next_polyomino(self):
+        self.polyomino = Polyomino(
+            y=0,
+            x=self.board.dimensions.cols // 2,
+        )
 
     def update(self) -> callable:
         """ """

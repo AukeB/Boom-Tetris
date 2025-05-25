@@ -16,6 +16,6 @@ BOARD:
   COLOR:
     BACKGROUND: !!python/tuple [55, 55, 55]
 
-TETROMINO:
+POLYOMINO:
   SIZE: 4
-  COLOR: !!python/tuple [200, 200, 200]  
+  COLOR: !!python/tuple [200, 255, 200]  

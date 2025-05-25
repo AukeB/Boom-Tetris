@@ -86,4 +86,4 @@ class PolyominoGenerator:
                 if number_of_cells <= self.number_of_polyomino_cells:
                     self.generate(coordinates=new_coordinates)
 
-        return self.unique_polyominos
+        return self.unique_coordinates

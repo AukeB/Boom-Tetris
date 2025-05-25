@@ -1,18 +1,26 @@
 """ """
 
 from src.boom_tetris.constants import Block
+from src.boom_tetris.config.config import Config
+from src.boom_tetris.constants import CONFIG_POLYOMINOS_RELATIVE_FILE_PATH
+from src.boom_tetris.polyomino.utils import convert_all_polyominos_to_block_objects
+
+config_polyomino = Config.load_config(
+    file_path=CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, validate=False
+)
+
+ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
+    all_coordinates=config_polyomino.ALL_POLYOMINOS
+)
 
 
 class Polyomino:
     """ """
 
-    def __init__(self, y: int, x: int, all_polyominos: list) -> None:
+    def __init__(self, y: int, x: int) -> None:
         """ """
         self.y, self.x = y, x
-
-        self.all_polyominos = all_polyominos
-
-        self.blocks = self.all_polyominos[4]
+        self.blocks = ALL_POLYOMINOS[1]
 
     def rotate(self, direction: int) -> None:
         """ """

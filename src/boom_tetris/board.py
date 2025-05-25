@@ -5,7 +5,7 @@ import pygame as pg
 
 from src.boom_tetris.config.model import ConfigModel
 from src.boom_tetris.constants import Dimensions, Position
-from src.boom_tetris.polyomino import Polyomino
+from src.boom_tetris.polyomino.polyomino import Polyomino
 
 
 class BoardCell:
@@ -44,7 +44,7 @@ class Board:
             self.config.BOARD.RECT.HEIGHT,
         )
 
-        self.cells: list[list[int]] = [
+        self.cells: list[list[BoardCell]] = [
             [BoardCell(row, col, 0) for col in range(self.dimensions.cols)]
             for row in range(self.dimensions.rows)
         ]
@@ -85,6 +85,11 @@ class Board:
                 return True
 
         return False
+
+    def place_polyomino(self, polyominal: Polyomino) -> None:
+        """ """
+        for block in polyominal:
+            self.cells[polyominal.y + block.y][polyominal.x + block.x].value = 1
 
     def __iter__(self):
         """ """

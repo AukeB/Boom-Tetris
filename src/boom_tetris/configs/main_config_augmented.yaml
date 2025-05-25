@@ -3,10 +3,7 @@ BOARD:
     HEIGHT: 50
     WIDTH: 50
   COLOR:
-    BACKGROUND: !!python/tuple
-    - 55
-    - 55
-    - 55
+    BACKGROUND: [55, 55, 55]
   DIMENSIONS:
     COLS: 10
     ROWS: 20
@@ -15,17 +12,15 @@ BOARD:
     LEFT: 740
     TOP: 40
     WIDTH: 500
-TETROMINO:
-  COLOR: !!python/tuple
-  - 200
-  - 200
-  - 200
+POLYOMINO:
+  ALL_SHAPES: [[[0, 0], [1, 0], [2, 0], [3, 0]], [[0, 0], [0, 1], [1, 1], [1, 2]],
+    [[0, 0], [0, 1], [1, 1], [2, 1]], [[0, 1], [1, 0], [1, 1], [2, 1]], [[0, 0], [
+        0, 1], [1, 0], [2, 0]], [[0, 0], [0, 1], [1, 0], [1, 1]], [[0, 0], [1, 0],
+      [1, 1], [2, 1]]]
+  COLOR: [200, 255, 200]
   SIZE: 4
 WINDOW:
   COLOR:
-    BACKGROUND: !!python/tuple
-    - 255
-    - 255
-    - 255
+    BACKGROUND: [255, 255, 255]
   HEIGHT: 1080
   WIDTH: 1920

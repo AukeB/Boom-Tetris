@@ -3,7 +3,7 @@
 import pygame as pg
 
 from src.boom_tetris.board import Board
-from src.boom_tetris.polyomino import Polyomino
+from src.boom_tetris.polyomino.polyomino import Polyomino
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import Position
 
@@ -54,7 +54,7 @@ class Renderer:
 
                 pg.draw.rect(
                     surface=self.surface,
-                    color=self.config.TETROMINO.COLOR,
+                    color=self.config.POLYOMINO.COLOR,
                     rect=cell,
                 )
 
@@ -68,4 +68,4 @@ class Renderer:
         for block in polyomino:
             block_rect.y = polyomino_position.y + block.y * block_rect.height
             block_rect.x = polyomino_position.x + block.x * block_rect.width
-            pg.draw.rect(self.surface, (self.config.TETROMINO.COLOR), block_rect)
+            pg.draw.rect(self.surface, (self.config.POLYOMINO.COLOR), block_rect)

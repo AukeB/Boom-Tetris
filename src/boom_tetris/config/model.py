@@ -52,4 +52,4 @@ class Window(BaseModel):
 class ConfigModel(BaseModel):
     WINDOW: Window
     BOARD: Board
-    TETROMINO: Polyomino
+    POLYOMINO: Polyomino
