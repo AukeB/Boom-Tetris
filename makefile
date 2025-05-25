@@ -12,4 +12,6 @@ git:
 	git push
 
 all:
-	ruff
+	make ruff
+	make clean
+	make git
