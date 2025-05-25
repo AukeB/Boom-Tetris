@@ -22,4 +22,4 @@ Dimensions = namedtuple("Dimensions", "cols rows")
 Size = namedtuple("Size", "width height")
 
 # Used for defining Tetromino's.
-Block = namedtuple("Block", "row col value")
+Block = namedtuple("Block", "row col")

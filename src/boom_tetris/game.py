@@ -5,7 +5,6 @@ import pygame as pg
 from src.boom_tetris.board import Board
 from src.boom_tetris.tetromino import Tetromino
 from src.boom_tetris.renderer import Renderer
-from src.boom_tetris.constants import Dimensions
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.tetromino_generator import TetrominoGenerator
 
@@ -20,19 +19,7 @@ class Game:
         pg.init()
 
         self.renderer = Renderer(config=self.config)
-
-        self.board = Board(
-            dimensions=Dimensions(
-                cols=self.config.BOARD.DIMENSIONS.COLS,
-                rows=self.config.BOARD.DIMENSIONS.ROWS,
-            ),
-            rect=pg.Rect(
-                self.config.BOARD.RECT.LEFT,
-                self.config.BOARD.RECT.TOP,
-                self.config.BOARD.RECT.WIDTH,
-                self.config.BOARD.RECT.HEIGHT,
-            ),
-        )
+        self.board = Board(config=self.config)
 
         tetromino_generator = TetrominoGenerator(
             number_of_tetromino_cells=self.config.TETROMINO.SIZE
@@ -42,13 +29,22 @@ class Game:
         print(unique_tetrominos)
         self.tetromino = Tetromino(row=0, col=self.board.dimensions.cols // 2)
 
-    def _handle_controls(self, event) -> None:
+    def handle_controls(self, event) -> None:
         """ """
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_LEFT:
                 self.tetromino.col -= 1
             if event.key == pg.K_RIGHT:
                 self.tetromino.col += 1
+            if event.key == pg.K_DOWN:
+                self.tetromino.row += 1
+            if event.key == pg.K_UP:
+                self.tetromino.row -= 1
+
+            if event.key == pg.K_a:
+                self.tetromino.rotate(-1)
+            if event.key == pg.K_d:
+                self.tetromino.rotate(1)
 
     def handle_events(self) -> bool:
         """ """
@@ -60,7 +56,7 @@ class Game:
             ):
                 return False
 
-            self._handle_controls(event)
+            self.handle_controls(event)
 
         return True
 

@@ -49,8 +49,8 @@ class Renderer:
 
         for row, col in board:
             if board.cells[row][col].value:
-                cell.x = board.rect.x + cell.width * col
-                cell.y = board.rect.y + cell.height * row
+                cell.y = board.rect.y + board.cell_rect.height * row
+                cell.x = board.rect.x + board.cell_rect.width * col
 
                 pg.draw.rect(
                     surface=self.surface,
@@ -66,6 +66,6 @@ class Renderer:
         )
 
         for block in tetromino:
-            block_rect.y = tetromino_position.y + block.col * block_rect.width
-            block_rect.x = tetromino_position.x + block.row * block_rect.height
+            block_rect.y = tetromino_position.y + block.row * block_rect.height
+            block_rect.x = tetromino_position.x + block.col * block_rect.width
             pg.draw.rect(self.surface, (self.config.TETROMINO.COLOR), block_rect)
