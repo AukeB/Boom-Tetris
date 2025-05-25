@@ -1,8 +1,9 @@
 """ """
 
 from collections import namedtuple
+from pathlib import Path
 
-MAIN_CONFIG_RELATIVE_FILE_PATH = "src/boom_tetris/configs/main_config.yaml"
+MAIN_CONFIG_RELATIVE_FILE_PATH = Path("src/boom_tetris/configs/main_config.yaml")
 
 # Used for exact position, with `y` and `x` having
 # pixel number as unit.
