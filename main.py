@@ -20,3 +20,14 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+"""
+Todo:
+
+- Reverse all y,x coordinates back to x,y
+- Replace yaml with more elaborate yaml package
+- O-piece detection -> Create mapping after tetris piece creation 
+    with an integer mapping to the ALL_POLYOMINOS variable. Afterwards,
+    implement no ration with the O-piece.
+"""

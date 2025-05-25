@@ -48,7 +48,7 @@ class Renderer:
         cell = board.cell_rect.copy()
 
         for row, col in board:
-            if board.cells[row][col].value:
+            if board.cells[row][col]:
                 cell.y = board.rect.y + board.cell_rect.height * row
                 cell.x = board.rect.x + board.cell_rect.width * col
 

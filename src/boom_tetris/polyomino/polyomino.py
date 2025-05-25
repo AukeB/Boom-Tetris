@@ -1,4 +1,5 @@
 """ """
+import random as rd
 
 from src.boom_tetris.constants import Block
 from src.boom_tetris.config.config import Config
@@ -17,10 +18,12 @@ ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
 class Polyomino:
     """ """
 
-    def __init__(self, y: int, x: int) -> None:
+    def __init__(self, x: int, y: int) -> None:
         """ """
-        self.y, self.x = y, x
-        self.blocks = ALL_POLYOMINOS[1]
+        self.x = x
+        self.y = y
+        choice = rd.randint(0, len(ALL_POLYOMINOS) - 1)
+        self.blocks = ALL_POLYOMINOS[choice]
 
     def rotate(self, direction: int) -> None:
         """ """

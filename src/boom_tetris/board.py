@@ -8,21 +8,6 @@ from src.boom_tetris.constants import Dimensions, Position
 from src.boom_tetris.polyomino.polyomino import Polyomino
 
 
-class BoardCell:
-    """ """
-
-    def __init__(
-        self,
-        row: int,
-        col: int,
-        value: int,
-    ) -> None:
-        """ """
-        self.row = row
-        self.col = col
-        self.value = value
-
-
 class Board:
     """ """
 
@@ -44,9 +29,9 @@ class Board:
             self.config.BOARD.RECT.HEIGHT,
         )
 
-        self.cells: list[list[BoardCell]] = [
-            [BoardCell(row, col, 0) for col in range(self.dimensions.cols)]
-            for row in range(self.dimensions.rows)
+        self.cells: list[list[int]] = [
+            [0 for _ in range(self.dimensions.cols)]
+            for _ in range(self.dimensions.rows)
         ]
 
         self.cell_rect = pg.Rect(
@@ -81,15 +66,22 @@ class Board:
                 return True
 
             # Collision with other pieces.
-            if self.cells[boundary_position.y][boundary_position.x].value:
+            if self.cells[boundary_position.y][boundary_position.x]:
                 return True
 
         return False
 
-    def place_polyomino(self, polyominal: Polyomino) -> None:
+    def place(self, polyominal: Polyomino) -> None:
         """ """
         for block in polyominal:
-            self.cells[polyominal.y + block.y][polyominal.x + block.x].value = 1
+            self.cells[polyominal.y + block.y][polyominal.x + block.x] = 1
+    
+    def clear_lines(self) -> None:
+        """ """
+        for row in self.cells[:]:
+            if not 0 in row:
+                self.cells.remove(row)
+                self.cells.insert(0, [0] * self.dimensions.cols)
 
     def __iter__(self):
         """ """
