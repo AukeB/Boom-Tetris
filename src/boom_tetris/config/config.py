@@ -5,7 +5,6 @@ import yaml
 from pydantic import BaseModel, conint
 from typing import Annotated
 
-from src.boom_tetris.constants import MAIN_CONFIG_RELATIVE_FILE_PATH
 
 UInt8 = Annotated[int, conint(ge=0, le=255)]
 
@@ -47,18 +46,29 @@ class Window(BaseModel):
     COLOR: WindowColor
 
 
-class Config(BaseModel):
+class ConfigModel(BaseModel):
     WINDOW: Window
     BOARD: Board
     TETROMINO: Tetromino
 
 
-def load_main_config(file_type: str = "yaml") -> dict:
+class Config:
     """ """
-    if file_type == "yaml":
-        with open(MAIN_CONFIG_RELATIVE_FILE_PATH) as file:
-            main_config = yaml.load(file, Loader=yaml.FullLoader)
 
-        config = Config(**main_config)
+    def __init__(self, config_path: str) -> None:
+        """ """
+        self.config_path = config_path
 
-    return config
+    def load_main_config(self, file_type: str = "yaml") -> dict:
+        """ """
+        if file_type == "yaml":
+            with open(self.config_path) as file:
+                main_config = yaml.load(file, Loader=yaml.FullLoader)
+
+            config = ConfigModel(**main_config)
+
+        return config
+
+    def augment_config(self, config: ConfigModel) -> ConfigModel:
+        """ """
+        pass

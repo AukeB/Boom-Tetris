@@ -4,7 +4,7 @@ import pygame as pg
 
 from src.boom_tetris.board import Board
 from src.boom_tetris.tetromino import Tetromino
-from src.boom_tetris.config_loader import Config
+from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import Position
 
 
