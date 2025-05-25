@@ -1,15 +1,17 @@
 """ """
 
+from src.boom_tetris.constants import Block
 
-class TetrominoGenerator:
+
+class PolyominoGenerator:
     """ """
 
-    def __init__(self, number_of_tetromino_cells: int) -> None:
+    def __init__(self, number_of_polyomino_cells: int) -> None:
         """ """
-        self.number_of_tetromino_cells = number_of_tetromino_cells
+        self.number_of_polyomino_cells = number_of_polyomino_cells
         self.directions: list = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         self.unique_coordinates = set()
-        self.unique_tetrominos = []
+        self.unique_polyominos = []
 
     def _normalize(
         self,
@@ -44,25 +46,21 @@ class TetrominoGenerator:
 
         return rotations
 
-    def _coordinates_to_tetrominos(
-        self, coordinates: tuple[tuple[int, int], ...]
-    ) -> list[list[int]]:
+    def _register_unique_polyomino(self, normalized_coordinates: set[tuple[int, int]]):
         """ """
-        y_max = max(y for y, _ in coordinates)
-        x_max = max(x for _, x in coordinates)
+        self.unique_coordinates.add(normalized_coordinates)
 
-        grid = [[0] * (x_max + 1) for _ in range(y_max + 1)]
+        polyomino = [
+            Block(coordinate[0], coordinate[1]) for coordinate in normalized_coordinates
+        ]
 
-        for y, x in coordinates:
-            grid[y][x] = 1
-
-        return grid
+        self.unique_polyominos.append(polyomino)
 
     def generate(self, coordinates: set[tuple[int, int]] = {(0, 0)}) -> set:
         """ """
         number_of_cells = len(coordinates)
 
-        if number_of_cells == self.number_of_tetromino_cells:
+        if number_of_cells == self.number_of_polyomino_cells:
             normalized_coordinates = self._normalize(coordinates=coordinates)
             rotation_invariant_coordinates = self._obtain_all_rotations(
                 coordinates=normalized_coordinates
@@ -74,11 +72,7 @@ class TetrominoGenerator:
             ):
                 return
 
-            self.unique_coordinates.add(normalized_coordinates)
-            tetromino = self._coordinates_to_tetrominos(
-                coordinates=normalized_coordinates
-            )
-            self.unique_tetrominos.append(tetromino)
+            self._register_unique_polyomino(normalized_coordinates)
 
         for y, x in list(coordinates):
             for dy, dx in self.directions:
@@ -89,7 +83,7 @@ class TetrominoGenerator:
 
                 new_coordinates = coordinates | {(ny, nx)}
 
-                if number_of_cells <= self.number_of_tetromino_cells:
+                if number_of_cells <= self.number_of_polyomino_cells:
                     self.generate(coordinates=new_coordinates)
 
-        return self.unique_tetrominos
+        return self.unique_polyominos

@@ -3,7 +3,7 @@
 import pygame as pg
 
 from src.boom_tetris.board import Board
-from src.boom_tetris.tetromino import Tetromino
+from src.boom_tetris.polyomino import Polyomino
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import Position
 
@@ -58,14 +58,14 @@ class Renderer:
                     rect=cell,
                 )
 
-    def draw_tetromino(self, tetromino: Tetromino, block_rect: pg.Rect) -> None:
+    def draw_polyomino(self, polyomino: Polyomino, block_rect: pg.Rect) -> None:
         """ """
-        tetromino_position = Position(
-            y=block_rect.y + tetromino.row * block_rect.height,
-            x=block_rect.x + tetromino.col * block_rect.width,
+        polyomino_position = Position(
+            y=block_rect.y + polyomino.y * block_rect.height,
+            x=block_rect.x + polyomino.x * block_rect.width,
         )
 
-        for block in tetromino:
-            block_rect.y = tetromino_position.y + block.row * block_rect.height
-            block_rect.x = tetromino_position.x + block.col * block_rect.width
+        for block in polyomino:
+            block_rect.y = polyomino_position.y + block.y * block_rect.height
+            block_rect.x = polyomino_position.x + block.x * block_rect.width
             pg.draw.rect(self.surface, (self.config.TETROMINO.COLOR), block_rect)

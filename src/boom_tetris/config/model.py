@@ -6,7 +6,7 @@ from typing import Annotated
 UInt8 = Annotated[int, conint(ge=0, le=255)]
 
 
-class Tetromino(BaseModel):
+class Polyomino(BaseModel):
     COLOR: tuple[UInt8, UInt8, UInt8]
     SIZE: int
 
@@ -52,4 +52,4 @@ class Window(BaseModel):
 class ConfigModel(BaseModel):
     WINDOW: Window
     BOARD: Board
-    TETROMINO: Tetromino
+    TETROMINO: Polyomino

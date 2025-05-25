@@ -4,7 +4,8 @@ import itertools
 import pygame as pg
 
 from src.boom_tetris.config.model import ConfigModel
-from src.boom_tetris.constants import Dimensions
+from src.boom_tetris.constants import Dimensions, Position
+from src.boom_tetris.polyomino import Polyomino
 
 
 class BoardCell:
@@ -54,6 +55,36 @@ class Board:
             self.config.BOARD.CELL.WIDTH,
             self.config.BOARD.CELL.HEIGHT,
         )
+
+    def collision(
+        self,
+        polyomino: Polyomino,
+        move_direction: tuple[int, int] = Position(0, 0),
+        rotate_direction: int = 0,
+    ) -> None:
+        """ """
+        for block in polyomino.get_rotation(rotate_direction):
+            boundary_position = Position(
+                y=polyomino.y + block.y + move_direction.y,
+                x=polyomino.x + block.x + move_direction.x,
+            )
+
+            # Collision with board edge.
+            collision: bool = (
+                boundary_position.x < 0
+                or boundary_position.x >= self.dimensions.cols
+                or boundary_position.y < 0
+                or boundary_position.y >= self.dimensions.rows
+            )
+
+            if collision:
+                return True
+
+            # Collision with other pieces.
+            if self.cells[boundary_position.y][boundary_position.x].value:
+                return True
+
+        return False
 
     def __iter__(self):
         """ """
