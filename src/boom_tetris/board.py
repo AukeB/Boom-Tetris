@@ -75,11 +75,11 @@ class Board:
         """ """
         for block in polyominal:
             self.cells[polyominal.y + block.y][polyominal.x + block.x] = 1
-    
+
     def clear_lines(self) -> None:
         """ """
         for row in self.cells[:]:
-            if not 0 in row:
+            if 0 not in row:
                 self.cells.remove(row)
                 self.cells.insert(0, [0] * self.dimensions.cols)
 

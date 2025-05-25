@@ -58,10 +58,12 @@ class Game:
                 self.polyomino, rotate_direction=-1
             ):
                 self.polyomino.rotate(-1)
-            
+
             # Optional hard-drop.
             if event.key == KEY.HARDDROP:
-                while not self.board.collision(self.polyomino, move_direction=Position(1, 0)):
+                while not self.board.collision(
+                    self.polyomino, move_direction=Position(1, 0)
+                ):
                     self.polyomino.y += 1
 
                 self.get_next_polyomino()
@@ -83,7 +85,10 @@ class Game:
     def get_next_polyomino(self):
         self.board.place(self.polyomino)
         self.board.clear_lines()
-        self.next_polyomino.x, self.next_polyomino.y = self.board.dimensions.cols // 2, 0
+        self.next_polyomino.x, self.next_polyomino.y = (
+            self.board.dimensions.cols // 2,
+            0,
+        )
         self.polyomino = self.next_polyomino
         self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)
 
@@ -92,6 +97,8 @@ class Game:
         with self.renderer:
             self.renderer.draw_board(board=self.board)
             self.renderer.draw_polyomino(self.polyomino, self.board.cell_rect.copy())
-            self.renderer.draw_polyomino(self.next_polyomino, self.board.cell_rect.copy())
+            self.renderer.draw_polyomino(
+                self.next_polyomino, self.board.cell_rect.copy()
+            )
 
         return self.handle_events()

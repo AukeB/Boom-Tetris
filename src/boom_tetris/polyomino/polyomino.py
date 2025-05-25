@@ -1,4 +1,5 @@
 """ """
+
 import random as rd
 
 from src.boom_tetris.constants import Block
