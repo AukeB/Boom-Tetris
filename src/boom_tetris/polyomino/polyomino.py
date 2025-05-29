@@ -5,14 +5,22 @@ import random as rd
 from src.boom_tetris.constants import Block
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
-from src.boom_tetris.polyomino.utils import convert_all_polyominos_to_block_objects
+from src.boom_tetris.polyomino.utils import (
+    convert_all_polyominos_to_block_objects,
+    apply_linear_transformation,
+)
 
 config_main = Config.load_config(
     file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, validate=False
 )
 
-ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
+shifted_coordinates = apply_linear_transformation(
     all_coordinates=config_main.POLYOMINO.ALL_SHAPES
+)
+print(shifted_coordinates)
+
+ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
+    all_coordinates=shifted_coordinates
 )
 
 
