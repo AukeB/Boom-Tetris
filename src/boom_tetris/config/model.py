@@ -1,9 +1,19 @@
 """ """
 
 from pydantic import BaseModel, conint
-from typing import Annotated
+from typing import Annotated, Literal
 
 UInt8 = Annotated[int, conint(ge=0, le=255)]
+IntDirection = Literal[-1, 0, 1]
+
+
+class Directions(BaseModel):
+    UP: list[IntDirection, IntDirection]
+    DOWN: list[IntDirection, IntDirection]
+    LEFT: list[IntDirection, IntDirection]
+    RIGHT: list[IntDirection, IntDirection]
+    ROTATE_CLOCKWISE: Literal[1, -1]
+    ROTATE_COUNTERCLOCKWISE: Literal[1, -1]
 
 
 class Polyomino(BaseModel):
@@ -53,3 +63,4 @@ class ConfigModel(BaseModel):
     WINDOW: Window
     BOARD: Board
     POLYOMINO: Polyomino
+    DIRECTIONS: Directions

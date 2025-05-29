@@ -6,10 +6,10 @@ from src.boom_tetris.constants import Block
 class PolyominoGenerator:
     """ """
 
-    def __init__(self, number_of_polyomino_cells: int) -> None:
+    def __init__(self, number_of_polyomino_cells: int, directions: list) -> None:
         """ """
         self.number_of_polyomino_cells = number_of_polyomino_cells
-        self.directions: list = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        self.directions = directions
         self.unique_coordinates = set()
         self.unique_polyominos = []
 
@@ -75,7 +75,8 @@ class PolyominoGenerator:
             self._register_unique_polyomino(normalized_coordinates)
 
         for y, x in list(coordinates):
-            for dy, dx in self.directions:
+            # for dy, dx in self.directions:
+            for _, (dy, dx) in self.directions.items():
                 ny, nx = y + dy, x + dx
 
                 if (ny, nx) in coordinates:

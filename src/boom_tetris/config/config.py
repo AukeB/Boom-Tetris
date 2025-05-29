@@ -7,7 +7,7 @@ from src.boom_tetris.config.model import ConfigModel
 from src.boom_tetris.polyomino.polyomino_generator import PolyominoGenerator
 from src.boom_tetris.utils.dot_dict import DotDict
 from src.boom_tetris.utils.yaml_dumper import FlowListDumper
-from src.boom_tetris.constants import CONFIG_POLYOMINOS_RELATIVE_FILE_PATH
+from src.boom_tetris.constants import CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, Position
 
 
 class Config:
@@ -31,7 +31,7 @@ class Config:
 
         return config
 
-    def _add_computational_parameters(self, config: ConfigModel) -> dict:
+    def _add_computational_parameters(self, config: ConfigModel) -> ConfigModel:
         """ """
         cell_width = config.BOARD.RECT.WIDTH // config.BOARD.DIMENSIONS.COLS
         cell_height = config.BOARD.RECT.HEIGHT // config.BOARD.DIMENSIONS.ROWS
@@ -40,10 +40,16 @@ class Config:
 
         return config
 
-    def _add_all_polyonomios(self, config: ConfigModel) -> dict:
+    def _add_all_polyonomios(self, config: ConfigModel) -> ConfigModel:
         """ """
+        directions = {
+            key: value
+            for key, value in config.DIRECTIONS.items()
+            if isinstance(value, Position)
+        }
+
         polyomino_generator = PolyominoGenerator(
-            number_of_polyomino_cells=config.POLYOMINO.SIZE
+            number_of_polyomino_cells=config.POLYOMINO.SIZE, directions=directions
         )
 
         unique_coordinates = polyomino_generator.generate()
@@ -51,6 +57,15 @@ class Config:
         config.POLYOMINO.ALL_SHAPES = [
             [[y, x] for (y, x) in shape] for shape in unique_coordinates
         ]
+
+        return config
+
+    def _change_data_types(self, config: ConfigModel) -> ConfigModel:
+        """ """
+        config.DIRECTIONS = {
+            key: Position(*value) if isinstance(value, list) else value
+            for key, value in config.DIRECTIONS.items()
+        }
 
         return config
 
@@ -97,5 +112,9 @@ class Config:
         augmented_config: ConfigModel = Config.load_config(
             file_path=augmented_config_path
         )
+
+        augmented_config = self._change_data_types(config=config)
+
+        print(augmented_config.DIRECTIONS)
 
         return augmented_config
