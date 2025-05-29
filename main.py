@@ -44,4 +44,6 @@ Todo:
     systeem. Waarschijnlijk beste om rotatie posities handmatig te definieren.
 
     Class van polyomino/utils.py maken
+- Blok met tijd om laag laten vallen
+- DAS implementeren
 """
