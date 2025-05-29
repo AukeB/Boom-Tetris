@@ -10,6 +10,7 @@ class PolyominoGenerator:
         """ """
         self.number_of_polyomino_cells = number_of_polyomino_cells
         self.directions = directions
+        print(len(directions))
         self.unique_coordinates = set()
         self.unique_polyominos = []
 
