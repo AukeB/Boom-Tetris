@@ -39,7 +39,7 @@ class PolyominoGenerator:
         """ """
         rotations = []
 
-        for _ in len(self.directions):
+        for _ in range(len(self.directions)):
             coordinates = self._rotate(coordinates)
             coordinates = self._normalize(coordinates)
             rotations.append(coordinates)

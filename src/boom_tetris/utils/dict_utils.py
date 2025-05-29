@@ -1,5 +1,42 @@
 """ """
 
+from typing import Union, Any
+from ruamel.yaml.comments import CommentedMap, CommentedSeq
+
+
+def format_for_writing_to_yaml_file(
+    obj: Union[dict, list, Any], path=None
+) -> Union[CommentedMap, CommentedSeq, Any]:
+    """ """
+    path = path or []
+
+    if isinstance(obj, dict):
+        new_map = CommentedMap()
+        for k, v in obj.items():
+            new_map[k] = format_for_writing_to_yaml_file(v, path + [k])
+        return new_map
+
+    elif isinstance(obj, list):
+        # Special case for POLYOMINO.ALL_SHAPES:
+        if path == ["POLYOMINO", "ALL_SHAPES"]:
+            outer = CommentedSeq()
+            for shape in obj:
+                inner = CommentedSeq()
+                inner.fa.set_flow_style()  # force inline for each 2D shape
+                for point in shape:
+                    inner.append(point)
+                outer.append(inner)
+            return outer
+
+        seq = CommentedSeq()
+        for item in obj:
+            seq.append(format_for_writing_to_yaml_file(item, path))
+        seq.fa.set_flow_style()  # Force inline.
+        return seq
+
+    else:
+        return obj
+
 
 class DotDict(dict):
     """ """

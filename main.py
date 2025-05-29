@@ -1,6 +1,5 @@
 """ """
 
-from src.boom_tetris.game import Game
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import MAIN_CONFIG_RELATIVE_FILE_PATH
 
@@ -11,6 +10,10 @@ def main() -> None:
 
     config_instance = Config(config_path=MAIN_CONFIG_RELATIVE_FILE_PATH)
     config_augmented = config_instance.augment_config(config=config_main)
+
+    # The 'Game' class can only be imported after the `augment_config` from
+    # the 'Config' class has been executed, because it generates a file.
+    from src.boom_tetris.game import Game
 
     game = Game(config=config_augmented)
 

@@ -1,13 +1,14 @@
 """ """
 
-import yaml
-
+from ruamel.yaml import YAML
 
 from src.boom_tetris.config.model import ConfigModel
 from src.boom_tetris.polyomino.polyomino_generator import PolyominoGenerator
-from src.boom_tetris.utils.dot_dict import DotDict
-from src.boom_tetris.utils.yaml_dumper import FlowListDumper
-from src.boom_tetris.constants import CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, Position
+from src.boom_tetris.utils.dict_utils import DotDict, format_for_writing_to_yaml_file
+from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, Position
+
+yaml = YAML()
+yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 class Config:
@@ -22,7 +23,7 @@ class Config:
         """ """
         if file_type == "yaml":
             with open(file_path) as file:
-                config = yaml.load(file, Loader=yaml.FullLoader)
+                config = yaml.load(file)
 
             if validate:
                 config = ConfigModel(**config)
@@ -42,6 +43,7 @@ class Config:
 
     def _add_all_polyonomios(self, config: DotDict) -> DotDict:
         """ """
+        # Exclude `rotations` from `directions`.
         directions = {
             key: value
             for key, value in config.DIRECTIONS.items()
@@ -75,51 +77,31 @@ class Config:
 
         return config
 
-    def _construct_augmented_config_path(
-        self, file_path: str, infix: str = "_augmented"
-    ) -> str:
+    def _write_config(self, file_path: str, config: DotDict) -> None:
         """ """
-        augmented_file_path = file_path.with_name(
-            f"{file_path.stem}{infix}{self.config_path.suffix}"
-        )
+        config_dict = config.to_dict()
+        config_dict_formatted = format_for_writing_to_yaml_file(obj=config_dict)
 
-        return augmented_file_path
-
-    def _write_config(self, file_path: str, config: dict) -> None:
-        """ """
         with open(file_path, "w") as file:
-            yaml.dump(config, file, Dumper=FlowListDumper, default_flow_style=False)
+            yaml.dump(config_dict_formatted, file)
 
     def augment_config(self, config) -> ConfigModel:
         """ """
-        augmented_config_path = self._construct_augmented_config_path(
-            file_path=self.config_path
-        )
-
         # Convert from Pydantic Basemodel to dictionary and then to DotDict
         # instance, to keep using dot notation for dictionary keys and values.
         config = DotDict(config.model_dump())
 
-        augmented_config = self._add_computational_parameters(config=config)
-        augmented_config = self._add_all_polyonomios(config=config)
+        augmented_config: DotDict = self._add_computational_parameters(config=config)
+        augmented_config: DotDict = self._add_all_polyonomios(config=config)
 
         self._write_config(
-            file_path=augmented_config_path, config=augmented_config.to_dict()
-        )
-
-        # Also write all the polyomino shapes to a separate .yaml file.
-        config_all_polyominos = {
-            "ALL_POLYOMINOS": augmented_config.POLYOMINO.ALL_SHAPES
-        }
-
-        self._write_config(
-            file_path=CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, config=config_all_polyominos
+            file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, config=augmented_config
         )
 
         augmented_config: ConfigModel = Config.load_config(
-            file_path=augmented_config_path
+            file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
         )
 
-        augmented_config = self._change_data_types(config=augmented_config)
+        augmented_config: ConfigModel = self._change_data_types(config=augmented_config)
 
         return augmented_config

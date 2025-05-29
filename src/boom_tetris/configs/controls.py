@@ -2,7 +2,7 @@
 
 import pygame as pg
 
-from src.boom_tetris.utils.dot_dict import DotDict
+from src.boom_tetris.utils.dict_utils import DotDict
 
 SINGLE_PLAYER_CONTROLS = DotDict(
     {

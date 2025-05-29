@@ -17,7 +17,7 @@ class Directions(BaseModel):
 
 
 class Polyomino(BaseModel):
-    COLOR: tuple[UInt8, UInt8, UInt8]
+    COLOR: list[UInt8, UInt8, UInt8]
     SIZE: int
 
 
@@ -27,7 +27,7 @@ class BoardCell(BaseModel):
 
 
 class BoardColor(BaseModel):
-    BACKGROUND: tuple[UInt8, UInt8, UInt8]
+    BACKGROUND: list[UInt8, UInt8, UInt8]
 
 
 class BoardRect(BaseModel):
@@ -50,7 +50,7 @@ class Board(BaseModel):
 
 
 class WindowColor(BaseModel):
-    BACKGROUND: tuple[UInt8, UInt8, UInt8]
+    BACKGROUND: list[UInt8, UInt8, UInt8]
 
 
 class Window(BaseModel):

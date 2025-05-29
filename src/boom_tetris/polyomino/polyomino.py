@@ -4,15 +4,15 @@ import random as rd
 
 from src.boom_tetris.constants import Block
 from src.boom_tetris.config.config import Config
-from src.boom_tetris.constants import CONFIG_POLYOMINOS_RELATIVE_FILE_PATH
+from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
 from src.boom_tetris.polyomino.utils import convert_all_polyominos_to_block_objects
 
-config_polyomino = Config.load_config(
-    file_path=CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, validate=False
+config_main = Config.load_config(
+    file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, validate=False
 )
 
 ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
-    all_coordinates=config_polyomino.ALL_POLYOMINOS
+    all_coordinates=config_main.POLYOMINO.ALL_SHAPES
 )
 
 
