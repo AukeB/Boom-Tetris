@@ -25,7 +25,7 @@ if __name__ == "__main__":
 """
 Todo:
 
-- Directions naar config (inclusief up, down, up, down)
+- Directions naar config (inclusief up, down, up, down) DONE
 - Reverse all y,x coordinates back to x,y
 - Replace yaml with more elaborate yaml package
 - O-piece detection -> Create mapping after tetris piece creation 

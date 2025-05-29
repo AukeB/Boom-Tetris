@@ -49,8 +49,8 @@ class Renderer:
 
         for row, col in board:
             if board.cells[row][col]:
-                cell.y = board.rect.y + board.cell_rect.height * row
                 cell.x = board.rect.x + board.cell_rect.width * col
+                cell.y = board.rect.y + board.cell_rect.height * row
 
                 pg.draw.rect(
                     surface=self.surface,
@@ -61,8 +61,8 @@ class Renderer:
     def draw_polyomino(self, polyomino: Polyomino, block_rect: pg.Rect) -> None:
         """ """
         polyomino_position = Position(
-            y=block_rect.y + polyomino.y * block_rect.height,
             x=block_rect.x + polyomino.x * block_rect.width,
+            y=block_rect.y + polyomino.y * block_rect.height,
         )
 
         for block in polyomino:
