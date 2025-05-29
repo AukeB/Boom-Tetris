@@ -28,31 +28,35 @@ class Game:
         """ """
         if event.type == pg.KEYDOWN:
             # Horizontal and vertical movement.
-            if event.key == KEY.LEFT and not self.board.collision(
-                self.polyomino, move_direction=self.config.DIRECTIONS.LEFT
-            ):
-                self.polyomino.x += self.config.DIRECTIONS.LEFT[1]
-            if event.key == KEY.RIGHT and not self.board.collision(
-                self.polyomino, move_direction=self.config.DIRECTIONS.RIGHT
-            ):
-                self.polyomino.x += self.config.DIRECTIONS.RIGHT[1]
             if event.key == KEY.UP and not self.board.collision(
                 self.polyomino, move_direction=self.config.DIRECTIONS.UP
             ):
-                self.polyomino.y += self.config.DIRECTIONS.UP[0]
+                self.polyomino.y += self.config.DIRECTIONS.UP[1]
+
             if event.key == KEY.DOWN:
                 if not self.board.collision(
                     self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
                 ):
-                    self.polyomino.y += self.config.DIRECTIONS.DOWN[0]
+                    self.polyomino.y += self.config.DIRECTIONS.DOWN[1]
                 else:
                     self.get_next_polyomino()
+
+            if event.key == KEY.LEFT and not self.board.collision(
+                self.polyomino, move_direction=self.config.DIRECTIONS.LEFT
+            ):
+                self.polyomino.x += self.config.DIRECTIONS.LEFT[0]
+
+            if event.key == KEY.RIGHT and not self.board.collision(
+                self.polyomino, move_direction=self.config.DIRECTIONS.RIGHT
+            ):
+                self.polyomino.x += self.config.DIRECTIONS.RIGHT[0]
 
             # Rotational movement.
             if event.key == KEY.ROTATE_CLOCKWISE and not self.board.collision(
                 self.polyomino, rotate_direction=self.config.DIRECTIONS.ROTATE_CLOCKWISE
             ):
                 self.polyomino.rotate(self.config.DIRECTIONS.ROTATE_CLOCKWISE)
+
             if event.key == KEY.ROTATE_COUNTERCLOCKWISE and not self.board.collision(
                 self.polyomino,
                 rotate_direction=self.config.DIRECTIONS.ROTATE_COUNTERCLOCKWISE,
@@ -64,7 +68,7 @@ class Game:
                 while not self.board.collision(
                     self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
                 ):
-                    self.polyomino.y += self.config.DIRECTIONS.DOWN[0]
+                    self.polyomino.y += self.config.DIRECTIONS.DOWN[1]
 
                 self.get_next_polyomino()
 

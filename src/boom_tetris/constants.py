@@ -22,11 +22,11 @@ CONFIG_POLYOMINOS_RELATIVE_FILE_PATH = Path(
     in pixel units, or a location within a grid or board, 
     expressed in terms of columns and rows.
 `Block` defines the discrete position of a unit cell within a 
-    polyomino, specified by its `y` and `x` within a local 
+    polyomino, specified by its `x` and `y` within a local 
     grid. It is used to describe the shape and structure of a 
     tetromino or other polyomino piece.
 """
-Dimensions = namedtuple("Dimensions", "cols rows")
+Dimensions = namedtuple("Dimensions", "rows cols")
 Size = namedtuple("Size", "width height")
-Position = namedtuple("Position", "y x")
-Block = namedtuple("Block", "y x")
+Position = namedtuple("Position", "x y")
+Block = namedtuple("Block", "x y")

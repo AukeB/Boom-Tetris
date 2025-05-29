@@ -10,7 +10,7 @@ def convert_all_polyominos_to_block_objects(
     all_polyominos = []
 
     for coordinates in all_coordinates:
-        polyomino = [Block(y, x) for y, x in coordinates]
+        polyomino = [Block(x, y) for x, y in coordinates]
         all_polyominos.append(polyomino)
 
     return all_polyominos

@@ -36,7 +36,7 @@ class Polyomino:
             return self.blocks
 
         return [
-            Block(block.x * direction, -block.y * direction) for block in self.blocks
+            Block(-block.y * direction, block.x * direction) for block in self.blocks
         ]
 
     def __iter__(self) -> None:

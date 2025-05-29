@@ -18,18 +18,18 @@ class PolyominoGenerator:
         coordinates: set[tuple[int, int]],
     ) -> set[tuple[int, int]]:
         """ """
-        y_min = min(y for y, _ in coordinates)
-        x_min = min(x for _, x in coordinates)
+        x_min = min(x for x, _ in coordinates)
+        y_min = min(y for _, y in coordinates)
 
         normalized_coordinates = tuple(
-            sorted((y - y_min, x - x_min) for y, x in coordinates)
+            sorted((x - x_min, y - y_min) for x, y in coordinates)
         )
 
         return normalized_coordinates
 
     def _rotate(self, coordinates: set[tuple[int, int]]) -> set[tuple[int, int]]:
         """ """
-        rotated_coordinates = set((-x, y) for y, x in coordinates)
+        rotated_coordinates = set((y, -x) for x, y in coordinates)
 
         return rotated_coordinates
 
@@ -39,7 +39,7 @@ class PolyominoGenerator:
         """ """
         rotations = []
 
-        for _ in range(4):
+        for _ in range(4):  # Replace with len(directions) if len(directions) == 4
             coordinates = self._rotate(coordinates)
             coordinates = self._normalize(coordinates)
             rotations.append(coordinates)
@@ -74,14 +74,14 @@ class PolyominoGenerator:
 
             self._register_unique_polyomino(normalized_coordinates)
 
-        for y, x in list(coordinates):
-            for _, (dy, dx) in self.directions.items():
-                ny, nx = y + dy, x + dx
+        for x, y in list(coordinates):
+            for _, (dx, dy) in self.directions.items():
+                nx, ny = x + dx, y + dy
 
-                if (ny, nx) in coordinates:
+                if (nx, ny) in coordinates:
                     continue
 
-                new_coordinates = coordinates | {(ny, nx)}
+                new_coordinates = coordinates | {(nx, ny)}
 
                 if number_of_cells <= self.number_of_polyomino_cells:
                     self.generate(coordinates=new_coordinates)

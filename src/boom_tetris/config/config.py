@@ -55,7 +55,7 @@ class Config:
         unique_coordinates = polyomino_generator.generate()
 
         config.POLYOMINO.ALL_SHAPES = [
-            [[y, x] for (y, x) in shape] for shape in unique_coordinates
+            [[x, y] for (x, y) in shape] for shape in unique_coordinates
         ]
 
         return config
