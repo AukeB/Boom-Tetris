@@ -25,10 +25,10 @@ if __name__ == "__main__":
 """
 Todo:
 
-- Directions naar config (inclusief up, down, up, down) DONE
-- Reverse all y,x coordinates back to x,y IN PROGRESS
-- Replace yaml with more elaborate yaml package
-- O-piece detection -> Create mapping after tetris piece creation 
+- Directions naar config (inclusief up, down, up, down)                     DONE
+- Reverse all y,x coordinates back to x,y                                   DONE
+- Replace yaml with more elaborate yaml package                             
+- O-piece detection -> Create mapping after tetris piece creation           
     with an integer mapping to the ALL_POLYOMINOS variable. Afterwards,
     implement no ration with the O-piece.
 """

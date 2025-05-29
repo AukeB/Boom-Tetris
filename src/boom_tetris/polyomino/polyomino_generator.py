@@ -10,7 +10,6 @@ class PolyominoGenerator:
         """ """
         self.number_of_polyomino_cells = number_of_polyomino_cells
         self.directions = directions
-        print(len(directions))
         self.unique_coordinates = set()
         self.unique_polyominos = []
 
@@ -40,7 +39,7 @@ class PolyominoGenerator:
         """ """
         rotations = []
 
-        for _ in range(4):  # Replace with len(directions) if len(directions) == 4
+        for _ in len(self.directions):
             coordinates = self._rotate(coordinates)
             coordinates = self._normalize(coordinates)
             rotations.append(coordinates)
