@@ -75,7 +75,6 @@ class PolyominoGenerator:
             self._register_unique_polyomino(normalized_coordinates)
 
         for y, x in list(coordinates):
-            # for dy, dx in self.directions:
             for _, (dy, dx) in self.directions.items():
                 ny, nx = y + dy, x + dx
 

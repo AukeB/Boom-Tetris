@@ -31,7 +31,7 @@ class Config:
 
         return config
 
-    def _add_computational_parameters(self, config: ConfigModel) -> ConfigModel:
+    def _add_computational_parameters(self, config: DotDict) -> DotDict:
         """ """
         cell_width = config.BOARD.RECT.WIDTH // config.BOARD.DIMENSIONS.COLS
         cell_height = config.BOARD.RECT.HEIGHT // config.BOARD.DIMENSIONS.ROWS
@@ -40,12 +40,12 @@ class Config:
 
         return config
 
-    def _add_all_polyonomios(self, config: ConfigModel) -> ConfigModel:
+    def _add_all_polyonomios(self, config: DotDict) -> DotDict:
         """ """
         directions = {
             key: value
             for key, value in config.DIRECTIONS.items()
-            if isinstance(value, Position)
+            if isinstance(value, list)
         }
 
         polyomino_generator = PolyominoGenerator(
@@ -62,10 +62,16 @@ class Config:
 
     def _change_data_types(self, config: ConfigModel) -> ConfigModel:
         """ """
-        config.DIRECTIONS = {
-            key: Position(*value) if isinstance(value, list) else value
-            for key, value in config.DIRECTIONS.items()
-        }
+        new_directions = config.DIRECTIONS.model_copy(
+            update={
+                "UP": Position(*config.DIRECTIONS.UP),
+                "DOWN": Position(*config.DIRECTIONS.DOWN),
+                "LEFT": Position(*config.DIRECTIONS.LEFT),
+                "RIGHT": Position(*config.DIRECTIONS.RIGHT),
+            }
+        )
+
+        config = config.model_copy(update={"DIRECTIONS": new_directions})
 
         return config
 
@@ -105,6 +111,7 @@ class Config:
         config_all_polyominos = {
             "ALL_POLYOMINOS": augmented_config.POLYOMINO.ALL_SHAPES
         }
+
         self._write_config(
             file_path=CONFIG_POLYOMINOS_RELATIVE_FILE_PATH, config=config_all_polyominos
         )
@@ -113,8 +120,6 @@ class Config:
             file_path=augmented_config_path
         )
 
-        augmented_config = self._change_data_types(config=config)
-
-        print(augmented_config.DIRECTIONS)
+        augmented_config = self._change_data_types(config=augmented_config)
 
         return augmented_config

@@ -44,14 +44,14 @@ class Board:
     def collision(
         self,
         polyomino: Polyomino,
-        move_direction: tuple[int, int] = Position(0, 0),
+        move_direction: Position[int, int] = Position(0, 0),
         rotate_direction: int = 0,
     ) -> None:
         """ """
         for block in polyomino.get_rotation(rotate_direction):
             boundary_position = Position(
-                y=polyomino.y + block.y + move_direction.y,
                 x=polyomino.x + block.x + move_direction.x,
+                y=polyomino.y + block.y + move_direction.y,
             )
 
             # Collision with board edge.

@@ -49,8 +49,8 @@ class Renderer:
 
         for row, col in board:
             if board.cells[row][col]:
-                cell.x = board.rect.x + board.cell_rect.width * col
                 cell.y = board.rect.y + board.cell_rect.height * row
+                cell.x = board.rect.x + board.cell_rect.width * col
 
                 pg.draw.rect(
                     surface=self.surface,
@@ -66,6 +66,6 @@ class Renderer:
         )
 
         for block in polyomino:
-            block_rect.y = polyomino_position.y + block.y * block_rect.height
             block_rect.x = polyomino_position.x + block.x * block_rect.width
+            block_rect.y = polyomino_position.y + block.y * block_rect.height
             pg.draw.rect(self.surface, (self.config.POLYOMINO.COLOR), block_rect)
