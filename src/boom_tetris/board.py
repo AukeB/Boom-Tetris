@@ -58,7 +58,7 @@ class Board:
             collision: bool = (
                 boundary_position.x < 0
                 or boundary_position.x >= self.dimensions.cols
-                or boundary_position.y < 0
+                # or boundary_position.y < 0
                 or boundary_position.y >= self.dimensions.rows
             )
 

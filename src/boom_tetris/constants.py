@@ -9,6 +9,11 @@ MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH = Path(
     "src/boom_tetris/configs/main_config_augmented.yaml"
 )
 
+# Polyomino properpties paths.
+TETROMINO_PROPERTIES_RELATIVE_FILE_PATH = Path(
+    "src/boom_tetris/configs/tetromino_properties.json"
+)
+
 """
 `Dimensions` refers to the structural properties of a grid, 
     matrix, or layout, specifying the number of columns and 

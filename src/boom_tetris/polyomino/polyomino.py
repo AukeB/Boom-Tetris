@@ -5,23 +5,15 @@ import random as rd
 from src.boom_tetris.constants import Block
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
-from src.boom_tetris.polyomino.utils import (
-    convert_all_polyominos_to_block_objects,
-    apply_linear_transformation,
-)
+from src.boom_tetris.polyomino.polyomino_transformer import PolyominoTransformer
 
 config_main = Config.load_config(
     file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, validate=False
 )
 
-shifted_coordinates = apply_linear_transformation(
-    all_coordinates=config_main.POLYOMINO.ALL_SHAPES
-)
-print(shifted_coordinates)
+polyomino_transformer = PolyominoTransformer(config=config_main)
 
-ALL_POLYOMINOS = convert_all_polyominos_to_block_objects(
-    all_coordinates=shifted_coordinates
-)
+ALL_POLYOMINOS, POLYOMINO_MAPPING = polyomino_transformer.execute()
 
 
 class Polyomino:
@@ -31,8 +23,24 @@ class Polyomino:
         """ """
         self.x = x
         self.y = y
-        choice = rd.randint(0, len(ALL_POLYOMINOS) - 1)
-        self.blocks = ALL_POLYOMINOS[choice]
+
+        polyomino_index = rd.randint(0, len(ALL_POLYOMINOS) - 1)
+
+        self.blocks = ALL_POLYOMINOS[polyomino_index]
+        print(self.blocks)
+        print(
+            POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)][
+                "name"
+            ]
+        )
+
+        # print(self.blocks)
+
+        # for key, _ in POLYOMINO_MAPPING.items():
+        #     print(key)
+
+        # if POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)]:
+        #     print(POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)]["name"])
 
     def rotate(self, direction: int) -> None:
         """ """
