@@ -44,6 +44,8 @@ Todo:
     gezeik met omzetten van tuples naar namedtuples)?
     
 - Maak board 23 hoog ipv 20
+- MyPy toevoegen
+    - Template repo updaten
 - Fix spawn positities polyomino's
 - Blok met tijd om laag laten vallen
 - DAS implementeren
