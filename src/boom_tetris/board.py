@@ -66,6 +66,8 @@ class Board:
                 return True
 
             # Collision with other pieces.
+            # print(boundary_position.y, boundary_position.x)
+            # Make board 23 height and only display 20 rows to fix issue.
             if self.cells[boundary_position.y][boundary_position.x]:
                 return True
 

@@ -27,29 +27,43 @@ class Polyomino:
         polyomino_index = rd.randint(0, len(ALL_POLYOMINOS) - 1)
 
         self.blocks = ALL_POLYOMINOS[polyomino_index]
-        print(self.blocks)
-        print(
-            POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)][
-                "name"
+        self.properties = POLYOMINO_MAPPING[
+            tuple((block.x, block.y) for block in self.blocks)
+        ]
+        self.rotation_type = self.properties["rotation_type"]
+
+        if self.rotation_type == 1:
+            self.rotation_index = 0
+            self.rotations = [
+                [Block(x, y) for x, y in rotation]
+                for rotation in self.properties["rotations"]
             ]
-        )
-
-        # print(self.blocks)
-
-        # for key, _ in POLYOMINO_MAPPING.items():
-        #     print(key)
-
-        # if POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)]:
-        #     print(POLYOMINO_MAPPING[tuple((block.x, block.y) for block in self.blocks)]["name"])
+            self.blocks = self.rotations[self.rotation_index]
 
     def rotate(self, direction: int) -> None:
         """ """
-        self.blocks = self.get_rotation(direction=direction)
+        if self.rotation_type == 1:
+            # Ask chatgpt if this double code can be avoided somehow.
+            self.rotation_index = (self.rotation_index + direction) % len(
+                self.rotations
+            )
+            self.blocks = self.rotations[self.rotation_index]
+        else:
+            self.blocks = self.get_rotation(direction=direction)
 
     def get_rotation(self, direction: int) -> list[Block]:
         """ """
         if direction == 0:
             return self.blocks
+
+        # If polyomino has None as rotation_type (such as the tetromino square),
+        # do not perform rotational movement.
+        if self.rotation_type is None:
+            return self.blocks
+
+        if self.rotation_type == 1:
+            rotation_index = (self.rotation_index + direction) % len(self.rotations)
+            return self.rotations[rotation_index]
 
         return [
             Block(-block.y * direction, block.x * direction) for block in self.blocks

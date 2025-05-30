@@ -32,18 +32,23 @@ Todo:
 - Directions naar config (inclusief up, down, up, down)                     DONE
 - Reverse all y,x coordinates back to x,y                                   DONE
 - Replace yaml with more elaborate yaml package                             DONE
-- O-piece detection -> Create mapping after tetris piece creation           
-    with an integer mapping to the ALL_POLYOMINOS variable. Afterwards,
-    implement no ration with the O-piece.
-
-
-    Hiermee beginnnen, lineair tranformatie op de coordinates van 
-    de tetris blocks toepassen werkt, maar vergeten dat de longbar, squiggly
-    en reverse squiggly maar twee verschillende rotatie posities hebben, mijn methode
-    zal er altijd 4 genereren. Het is wel valid, maar niet volgens het juiste rotatie
-    systeem. Waarschijnlijk beste om rotatie posities handmatig te definieren.
-
-    Class van polyomino/utils.py maken
+- Class van polyomino/utils.py maken genaamd PolynomioTransformer           DONE
+    Bedoeld voor postprocessing de polyomino's na de generation             DONE
+- Fix all rotaties voor tetromino's                                         DONE
+    Inclusief geen rotatie voor O-piece                                     DONE
+    En manually defined rotations voor I, Z and S-piece.                    DONE
+- Nog ene keer PolyominoTranformer class doorlopen
+    Coordinate, coordinates, all_coordinates betere namen geven
+    Nog een keer tuple vs lists analyseren (misschien in readme zetten)
+    Nog blocks gebruiken voor tetris pieces (of alleen maar veel
+    gezeik met omzetten van tuples naar namedtuples)?
+    
+- Maak board 23 hoog ipv 20
+- Fix spawn positities polyomino's
 - Blok met tijd om laag laten vallen
 - DAS implementeren
+
+Backlog:
+
+- Ook pentomino mapping maken op dezelfde manier is tetromino mapping       
 """
