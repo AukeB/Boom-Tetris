@@ -42,7 +42,7 @@ class Polyomino:
 
     def rotate(self, direction: int) -> None:
         """ """
-        if self.rotation_type == 1:
+        if self.rotation_type == 1:  # Misschien toch met string vervangen.
             # Ask chatgpt if this double code can be avoided somehow.
             self.rotation_index = (self.rotation_index + direction) % len(
                 self.rotations
