@@ -48,6 +48,7 @@ Todo:
     Hidden rows toevoegen                                                   DONE
     Nadenken over hoe dit precies in code te zetten                         
     Issue fixen met kleine ruimte over als board_size 30 rows heeft
+- New line toevoegen met ruamel package na elke level1 dict item              
 
 
     
