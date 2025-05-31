@@ -37,13 +37,20 @@ Todo:
 - Fix all rotaties voor tetromino's                                         DONE
     Inclusief geen rotatie voor O-piece                                     DONE
     En manually defined rotations voor I, Z and S-piece.                    DONE
+- Fixen Pydantic parameters meegeven die niet in BaseModel staat            DONE
+- Board size computen gebaseerd op window size                              DONE
 - Nog ene keer PolyominoTranformer class doorlopen
     Coordinate, coordinates, all_coordinates betere namen geven
     Nog een keer tuple vs lists analyseren (misschien in readme zetten)
     Nog blocks gebruiken voor tetris pieces (of alleen maar veel
     gezeik met omzetten van tuples naar namedtuples)?
-    
 - Maak board 23 hoog ipv 20
+    Hidden rows toevoegen                                                   DONE
+    Nadenken over hoe dit precies in code te zetten                         
+    Issue fixen met kleine ruimte over als board_size 30 rows heeft
+
+
+    
 - MyPy toevoegen
     - Template repo updaten
 - Fix spawn positities polyomino's

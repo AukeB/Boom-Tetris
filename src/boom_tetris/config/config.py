@@ -33,9 +33,40 @@ class Config:
         return config
 
     def _add_computational_parameters(self, config: DotDict) -> DotDict:
-        """ """
-        cell_width = config.BOARD.RECT.WIDTH // config.BOARD.DIMENSIONS.COLS
-        cell_height = config.BOARD.RECT.HEIGHT // config.BOARD.DIMENSIONS.ROWS
+        """
+        Computations:
+
+        - Total number of rows on board, there are a couple of hidden
+            rows to make sure pieces can rotate right at the spawn
+            location.
+        - Board size (left, top, width, height), based on the window
+            size (width, height and margin).
+        - Cell width and height, based on the board width and height and
+            the number of cells the board consists of (default values
+            are 20 rows and 10 columns).
+        """
+
+        # Computations.
+        rows_total = config.BOARD.DIMENSIONS.ROWS + config.BOARD.DIMENSIONS.ROWS_HIDDEN
+
+        window_horizontal_mid = config.WINDOW.WIDTH / 2
+        board_height = config.WINDOW.HEIGHT - (2 * config.WINDOW.MARGIN)
+        board_width = board_height * (config.BOARD.DIMENSIONS.COLS / rows_total)
+        board_left = window_horizontal_mid - board_width / 2
+        board_top = config.WINDOW.MARGIN
+
+        cell_width = board_width / config.BOARD.DIMENSIONS.COLS
+        cell_height = board_height / rows_total
+
+        # Adding computed parameters back to config.
+        config.BOARD.DIMENSIONS.ROWS_TOTAL = rows_total
+
+        config.BOARD.RECT = {
+            "LEFT": board_left,
+            "TOP": board_top,
+            "WIDTH": board_width,
+            "HEIGHT": board_height,
+        }
 
         config.BOARD.CELL = {"WIDTH": cell_width, "HEIGHT": cell_height}
 

@@ -21,7 +21,9 @@ class Game:
         self.renderer = Renderer(config=self.config)
         self.board = Board(config=self.config)
 
-        self.polyomino = Polyomino(self.board.dimensions.cols // 2, 0)
+        self.polyomino = Polyomino(
+            self.board.dimensions.cols // 2, self.config.BOARD.DIMENSIONS.ROWS_HIDDEN
+        )  # Probably correct.
         self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)
 
     def handle_controls(self, event) -> None:
@@ -91,7 +93,7 @@ class Game:
         self.board.clear_lines()
         self.next_polyomino.x, self.next_polyomino.y = (
             self.board.dimensions.cols // 2,
-            0,
+            self.config.BOARD.DIMENSIONS.ROWS_HIDDEN,
         )
         self.polyomino = self.next_polyomino
         self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)

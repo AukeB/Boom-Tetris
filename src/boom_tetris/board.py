@@ -19,7 +19,7 @@ class Board:
         self.config = config
 
         self.dimensions = Dimensions(
-            rows=self.config.BOARD.DIMENSIONS.ROWS,
+            rows=self.config.BOARD.DIMENSIONS.ROWS_TOTAL,  # Needs to change.
             cols=self.config.BOARD.DIMENSIONS.COLS,
         )
         self.rect = pg.Rect(
