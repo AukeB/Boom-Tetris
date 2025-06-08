@@ -2,18 +2,20 @@
 
 import random as rd
 
-from src.boom_tetris.constants import Block
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
-from src.boom_tetris.polyomino.polyomino_transformer import PolyominoTransformer
+from src.boom_tetris.polyomino.polyomino_transformer import PolyominoTransformer, PolyominoTransformer2
 
 config_main = Config.load_config(
     file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, validate=False
 )
 
-polyomino_transformer = PolyominoTransformer(config=config_main)
+#polyomino_transformer = PolyominoTransformer(config=config_main)
 
-ALL_POLYOMINOS, POLYOMINO_MAPPING = polyomino_transformer.execute()
+#ALL_POLYOMINOS, POLYOMINO_MAPPING = polyomino_transformer.execute()
+
+polyomino_transformer_2 = PolyominoTransformer2(config=config_main)
+ALL_POLYOMINOS2, POLYOMINO_MAPPING2 = polyomino_transformer_2.execute()
 
 
 class Polyomino:
@@ -24,20 +26,15 @@ class Polyomino:
         self.x = x
         self.y = y
 
-        polyomino_index = rd.randint(0, len(ALL_POLYOMINOS) - 1)
+        polyomino_index = rd.randint(0, len(ALL_POLYOMINOS2) - 1)
 
-        self.blocks = ALL_POLYOMINOS[polyomino_index]
-        self.properties = POLYOMINO_MAPPING[
-            tuple((block.x, block.y) for block in self.blocks)
-        ]
-        self.rotation_type = self.properties["rotation_type"]
+        self.blocks = ALL_POLYOMINOS2[polyomino_index]
+        self.properties = POLYOMINO_MAPPING2[tuple(tuple(block) for block in self.blocks)]
+        self.rotation_type = self.properties.rotation_type
 
         if self.rotation_type == 1:
             self.rotation_index = 0
-            self.rotations = [
-                [Block(x, y) for x, y in rotation]
-                for rotation in self.properties["rotations"]
-            ]
+            self.rotations = self.properties.rotations
             self.blocks = self.rotations[self.rotation_index]
 
     def rotate(self, direction: int) -> None:
@@ -51,7 +48,7 @@ class Polyomino:
         else:
             self.blocks = self.get_rotation(direction=direction)
 
-    def get_rotation(self, direction: int) -> list[Block]:
+    def get_rotation(self, direction: int) -> list[tuple]:
         """ """
         if direction == 0:
             return self.blocks
@@ -65,9 +62,7 @@ class Polyomino:
             rotation_index = (self.rotation_index + direction) % len(self.rotations)
             return self.rotations[rotation_index]
 
-        return [
-            Block(-block.y * direction, block.x * direction) for block in self.blocks
-        ]
+        return [(-y * direction, x * direction) for (x, y) in self.blocks]
 
     def __iter__(self) -> None:
         """ """

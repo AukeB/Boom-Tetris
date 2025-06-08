@@ -26,12 +26,7 @@ TETROMINO_PROPERTIES_RELATIVE_FILE_PATH = Path(
     These coordinates may represent a position on the screen 
     in pixel units, or a location within a grid or board, 
     expressed in terms of columns and rows.
-`Block` defines the discrete position of a unit cell within a 
-    polyomino, specified by its `x` and `y` within a local 
-    grid. It is used to describe the shape and structure of a 
-    tetromino or other polyomino piece.
 """
 Dimensions = namedtuple("Dimensions", "rows cols")
 Size = namedtuple("Size", "width height")
 Position = namedtuple("Position", "x y")
-Block = namedtuple("Block", "x y")

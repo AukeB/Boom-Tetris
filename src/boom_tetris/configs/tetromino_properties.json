@@ -1,29 +1,39 @@
 {
     "[[0, 0], [1, 0], [1, 1], [1, 2]]": {
         "name": "j_piece",
+        "rotation_correction": 0,
+        "position_correction": [0, 0],
         "rotation_type": 0,
         "rotation_point": [1, 1]
     },
     "[[0, 0], [0, 1], [0, 2], [1, 0]]": {
         "name": "l_piece",
+        "rotation_correction": 0,
+        "position_correction": [0, 0],
         "rotation_type": 0,
         "rotation_point": [0, 1]
     },
     "[[0, 1], [1, 0], [1, 1], [1, 2]]": {
         "name": "t_piece",
+        "rotation_correction": 0,
+        "position_correction": [-1, -1],
         "rotation_type": 0,
         "rotation_point": [1, 1]
     },
     "[[0, 0], [0, 1], [0, 2], [0, 3]]": {
         "name": "longbar",
+        "rotation_correction": 0,
+        "position_correction": [0, -2],
         "rotation_type": 1,
         "rotations": [
-            [[1, 2], [0, 2], [-1, 2], [-2, 2]],
-            [[0, 0], [0, 1], [0, 2], [0, 3]]
+            [[1, 0], [0, 0], [-1, 0], [-2, 0]],
+            [[0, -2], [0, -1], [0, 0], [0, 1]]
         ]
     },
     "[[0, 0], [0, 1], [1, 1], [1, 2]]": {
         "name": "squiggly",
+        "rotation_correction": 0,
+        "position_correction": [0, 0],
         "rotation_type": 1,
         "rotations": [
             [[0, 0], [1, 0], [0, 1], [-1, 1]],
@@ -32,6 +42,8 @@
     },
     "[[0, 0], [1, 0], [1, 1], [2, 1]]": {
         "name": "reverse_squiggly",
+        "rotation_correction": 1,
+        "position_correction": [0, 0],
         "rotation_type": 1,
         "rotations": [
             [[2, 0], [2, 1], [1, 1], [1, 2]],
@@ -40,6 +52,9 @@
     },
     "[[0, 0], [0, 1], [1, 0], [1, 1]]": {
         "name": "square",
-        "rotation_type": null
+        "rotation_correction": 0,
+        "position_correction": [-1, 0],
+        "rotation_type": null,
+        "rotations": null
     }
 }

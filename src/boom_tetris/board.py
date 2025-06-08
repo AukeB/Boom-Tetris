@@ -50,8 +50,8 @@ class Board:
         """ """
         for block in polyomino.get_rotation(rotate_direction):
             boundary_position = Position(
-                x=polyomino.x + block.x + move_direction.x,
-                y=polyomino.y + block.y + move_direction.y,
+                x=polyomino.x + block[0] + move_direction[0],
+                y=polyomino.y + block[1] + move_direction[1],
             )
 
             # Collision with board edge.
@@ -76,7 +76,7 @@ class Board:
     def place(self, polyominal: Polyomino) -> None:
         """ """
         for block in polyominal:
-            self.cells[polyominal.y + block.y][polyominal.x + block.x] = 1
+            self.cells[polyominal.y + block[1]][polyominal.x + block[0]] = 1
 
     def clear_lines(self) -> None:
         """ """

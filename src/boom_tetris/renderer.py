@@ -66,6 +66,21 @@ class Renderer:
         )
 
         for block in polyomino:
-            block_rect.x = polyomino_position.x + block.x * block_rect.width
-            block_rect.y = polyomino_position.y + block.y * block_rect.height
+            block_rect.x = polyomino_position.x + block[0] * block_rect.width
+            block_rect.y = polyomino_position.y + block[1] * block_rect.height
             pg.draw.rect(self.surface, (self.config.POLYOMINO.COLOR), block_rect)
+
+    def draw_grid_lines(self, board: Board) -> None:
+        """ """
+        if self.config.BOARD.GRID_LINES.ENABLED:
+            for col in range(1, board.dimensions.cols):
+                x = board.rect.x + col * board.cell_rect.width
+                start_pos = (x, board.rect.y)
+                end_pos = (x, board.rect.y + board.rect.height)
+                pg.draw.line(self.surface, self.config.BOARD.GRID_LINES.LINE_COLOR, start_pos, end_pos, self.config.BOARD.GRID_LINES.LINE_WIDTH)
+
+            for row in range(1, board.dimensions.rows):
+                y = board.rect.y + row * board.cell_rect.height
+                start_pos = (board.rect.x, y)
+                end_pos = (board.rect.x + board.rect.width, y)
+                pg.draw.line(self.surface, self.config.BOARD.GRID_LINES.LINE_COLOR, start_pos, end_pos, self.config.BOARD.GRID_LINES.LINE_WIDTH)

@@ -26,6 +26,12 @@ class Polyomino(StrictBaseModel):
     ALL_SHAPES: list | None = None
 
 
+class BoardGridLines(StrictBaseModel):
+    ENABLED: bool
+    LINE_COLOR: list[UInt8, UInt8, UInt8]
+    LINE_WIDTH: int
+
+
 class BoardCell(StrictBaseModel):
     WIDTH: int | float
     HEIGHT: int | float
@@ -54,6 +60,7 @@ class Board(StrictBaseModel):
     RECT: BoardRect | None = None
     COLOR: BoardColor
     CELL: BoardCell | None = None
+    GRID_LINES: BoardGridLines
 
 
 class WindowColor(StrictBaseModel):

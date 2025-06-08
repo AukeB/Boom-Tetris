@@ -1,8 +1,5 @@
 """ """
 
-from src.boom_tetris.constants import Block
-
-
 class PolyominoGenerator:
     """ """
 
@@ -11,7 +8,6 @@ class PolyominoGenerator:
         self.number_of_polyomino_cells = number_of_polyomino_cells
         self.directions = directions
         self.unique_coordinates = set()
-        self.unique_polyominos = []
 
     def _normalize(
         self,
@@ -46,16 +42,6 @@ class PolyominoGenerator:
 
         return rotations
 
-    def _register_unique_polyomino(self, normalized_coordinates: set[tuple[int, int]]):
-        """ """
-        self.unique_coordinates.add(normalized_coordinates)
-
-        polyomino = [
-            Block(coordinate[0], coordinate[1]) for coordinate in normalized_coordinates
-        ]
-
-        self.unique_polyominos.append(polyomino)
-
     def generate(self, coordinates: set[tuple[int, int]] = {(0, 0)}) -> set:
         """ """
         number_of_cells = len(coordinates)
@@ -71,8 +57,10 @@ class PolyominoGenerator:
                 for coordinates in rotation_invariant_coordinates
             ):
                 return
+            
+            normalized_coordinates = tuple(sorted(normalized_coordinates))
 
-            self._register_unique_polyomino(normalized_coordinates)
+            self.unique_coordinates.add(normalized_coordinates)
 
         for x, y in list(coordinates):
             for _, (dx, dy) in self.directions.items():

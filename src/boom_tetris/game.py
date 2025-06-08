@@ -23,7 +23,7 @@ class Game:
 
         self.polyomino = Polyomino(
             self.board.dimensions.cols // 2, self.config.BOARD.DIMENSIONS.ROWS_HIDDEN
-        )  # Probably correct.
+        )  # Probably correct. # Move to config. or compute it based on config parameters?
         self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)
 
     def handle_controls(self, event) -> None:
@@ -106,5 +106,7 @@ class Game:
             self.renderer.draw_polyomino(
                 self.next_polyomino, self.board.cell_rect.copy()
             )
+
+            self.renderer.draw_grid_lines(board=self.board)
 
         return self.handle_events()
