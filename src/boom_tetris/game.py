@@ -21,8 +21,14 @@ class Game:
         self.renderer = Renderer(config=self.config)
         self.board = Board(config=self.config)
 
-        self.polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION[0], self.config.POLYOMINO.SPAWN_POSITION[1])
-        self.next_polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION_NEXT[0], self.config.POLYOMINO.SPAWN_POSITION_NEXT[1])
+        self.polyomino = Polyomino(
+            self.config.POLYOMINO.SPAWN_POSITION[0],
+            self.config.POLYOMINO.SPAWN_POSITION[1],
+        )
+        self.next_polyomino = Polyomino(
+            self.config.POLYOMINO.SPAWN_POSITION_NEXT[0],
+            self.config.POLYOMINO.SPAWN_POSITION_NEXT[1],
+        )
 
     def handle_controls(self, event) -> None:
         """ """
@@ -89,9 +95,15 @@ class Game:
     def get_next_polyomino(self):
         self.board.place(self.polyomino)
         self.board.clear_lines()
-        self.next_polyomino.x, self.next_polyomino.y = self.config.POLYOMINO.SPAWN_POSITION[0], self.config.POLYOMINO.SPAWN_POSITION[1]
+        self.next_polyomino.x, self.next_polyomino.y = (
+            self.config.POLYOMINO.SPAWN_POSITION[0],
+            self.config.POLYOMINO.SPAWN_POSITION[1],
+        )
         self.polyomino = self.next_polyomino
-        self.next_polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION_NEXT[0], self.config.POLYOMINO.SPAWN_POSITION_NEXT[1])
+        self.next_polyomino = Polyomino(
+            self.config.POLYOMINO.SPAWN_POSITION_NEXT[0],
+            self.config.POLYOMINO.SPAWN_POSITION_NEXT[1],
+        )
 
     def update(self) -> callable:
         """ """

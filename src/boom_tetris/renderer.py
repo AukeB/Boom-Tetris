@@ -87,7 +87,9 @@ class Renderer:
                     self.config.BOARD.GRID_LINES.LINE_WIDTH,
                 )
 
-            for row in range(self.config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1, board.dimensions.rows):
+            for row in range(
+                self.config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1, board.dimensions.rows
+            ):
                 y = board.rect.y + row * board.cell_rect.height
                 start_pos = (board.rect.x, y)
                 end_pos = (board.rect.x + board.rect.width, y)

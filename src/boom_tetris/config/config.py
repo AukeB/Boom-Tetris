@@ -82,8 +82,14 @@ class Config:
         config.BOARD.CELL = {"WIDTH": cell_width, "HEIGHT": cell_height}
 
         # Add other parameters.
-        config.POLYOMINO.SPAWN_POSITION = [config.BOARD.DIMENSIONS.COLS // 2, config.BOARD.DIMENSIONS.ROWS_HIDDEN]
-        config.POLYOMINO.SPAWN_POSITION_NEXT = [config.BOARD.DIMENSIONS.COLS + 3, config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1]
+        config.POLYOMINO.SPAWN_POSITION = [
+            config.BOARD.DIMENSIONS.COLS // 2,
+            config.BOARD.DIMENSIONS.ROWS_HIDDEN,
+        ]
+        config.POLYOMINO.SPAWN_POSITION_NEXT = [
+            config.BOARD.DIMENSIONS.COLS + 3,
+            config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1,
+        ]
 
         return config
 
