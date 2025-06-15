@@ -5,8 +5,7 @@ from ruamel.yaml.comments import CommentedMap, CommentedSeq
 
 
 def format_for_writing_to_yaml_file(
-    obj: Union[dict, list, Any],
-    path=None
+    obj: Union[dict, list, Any], path=None
 ) -> Union[CommentedMap, CommentedSeq, Any]:
     """ """
     path = path or []
@@ -16,11 +15,11 @@ def format_for_writing_to_yaml_file(
 
         for k, v in obj.items():
             new_map[k] = format_for_writing_to_yaml_file(v, path + [k])
-        
+
         if not path:
-            keys = list(new_map.keys()) 
+            keys = list(new_map.keys())
             for k in keys[1:]:
-                new_map.yaml_set_comment_before_after_key(k, before='\n')
+                new_map.yaml_set_comment_before_after_key(k, before="\n")
 
         return new_map
 
