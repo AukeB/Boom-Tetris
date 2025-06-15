@@ -7,7 +7,7 @@ WINDOW:
 
 BOARD:
   DIMENSIONS:
-    ROWS: 20
+    ROWS: 30
     COLS: 10
     ROWS_HIDDEN: 2
   COLOR:

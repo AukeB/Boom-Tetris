@@ -42,18 +42,17 @@ Todo:
 - Implement grid_lines                                                      DONE
 - Juiste rotaties alle tetrominos implementeren                             DONE
 - Juiste spawn positions fixen voor alle tetrominos                         DONE
-- PolyominoTranformer class optimaliseren
     Block namedtuple uit code halen                                         DONE
 - Hidden rows toevoegen                                                     DONE
-    Nadenken over hoe dit precies in code te zetten                         
-    Issue fixen met kleine ruimte over als board_size 30 rows heeft
-- New line toevoegen met ruamel package na elke level1 dict item              
+- Board resizen met hidden rows en hidden rows blokkeren                    DONE
+- PolyominoTranformer class optimaliseren
+- Bug fixen met kleine ruimte over als board_size 30 rows heeft
+- New line toevoegen met ruamel package na elke level1 dict item            
 
 
     
 - MyPy toevoegen
     - Template repo updaten
-- Fix spawn positities polyomino's
 - Blok met tijd om laag laten vallen
 - DAS implementeren
 
