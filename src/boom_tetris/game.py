@@ -146,6 +146,8 @@ class Game:
                 frames_per_cell=self.config.GENERAL.NTSC_DROP_FRAMES[self.level],
             )
 
+        self.last_drop_time = pg.time.get_ticks()
+
         self.next_polyomino.x, self.next_polyomino.y = (
             self.config.POLYOMINO.SPAWN_POSITION[0],
             self.config.POLYOMINO.SPAWN_POSITION[1],
