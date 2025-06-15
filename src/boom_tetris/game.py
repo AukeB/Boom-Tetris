@@ -44,6 +44,7 @@ class Game:
         self.line_counter = 0
         self.last_drop_time = pg.time.get_ticks()
 
+        # Probably best to merge these two functions.
         frames_per_cell = get_frames_per_cell(
             self.level, self.config.GENERAL.NTSC_DROP_FRAMES
         )
@@ -115,7 +116,7 @@ class Game:
 
         return True
 
-    def update_level(self, lines_cleared: int) -> None:
+    def update_lines_and_level(self, lines_cleared: int) -> None:
         """ """
         if not self.leveled_up:
             if (
@@ -128,15 +129,16 @@ class Game:
             if (self.line_counter + lines_cleared) // 10 != self.line_counter // 10:
                 self.level += 1
 
+        self.line_counter += lines_cleared
+
     def get_next_polyomino(self):
         """ """
+        # Place the polyomino on the board.
         self.board.place(self.polyomino)
 
+        # Possible update line clear, level and drop speed.
         lines_cleared = self.board.clear_lines()
-
-        self.update_level(lines_cleared=lines_cleared)
-
-        self.line_counter += lines_cleared
+        self.update_lines_and_level(lines_cleared=lines_cleared)
 
         if self.level in self.config.GENERAL.NTSC_DROP_FRAMES:
             self.drop_interval = convert_drop_frames_to_time(
