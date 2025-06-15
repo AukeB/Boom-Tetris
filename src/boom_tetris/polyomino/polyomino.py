@@ -17,7 +17,6 @@ config_main = Config.load_config(
 polyomino_transformer_2 = PolyominoTransformer2(config=config_main)
 ALL_POLYOMINOS2, POLYOMINO_MAPPING2 = polyomino_transformer_2.execute()
 
-
 class Polyomino:
     """ """
 
@@ -30,16 +29,17 @@ class Polyomino:
 
         self.blocks = ALL_POLYOMINOS2[polyomino_index]
         self.properties = POLYOMINO_MAPPING2[tuple(tuple(block) for block in self.blocks)]
+        print(self.properties.name)
         self.rotation_type = self.properties.rotation_type
 
-        if self.rotation_type == 1:
+        if self.rotation_type == "predefined":
             self.rotation_index = 0
             self.rotations = self.properties.rotations
             self.blocks = self.rotations[self.rotation_index]
 
     def rotate(self, direction: int) -> None:
         """ """
-        if self.rotation_type == 1:  # Misschien toch met string vervangen.
+        if self.rotation_type == "predefined":
             # Ask chatgpt if this double code can be avoided somehow.
             self.rotation_index = (self.rotation_index + direction) % len(
                 self.rotations
@@ -58,7 +58,7 @@ class Polyomino:
         if self.rotation_type is None:
             return self.blocks
 
-        if self.rotation_type == 1:
+        if self.rotation_type == "predefined":
             rotation_index = (self.rotation_index + direction) % len(self.rotations)
             return self.rotations[rotation_index]
 

@@ -60,12 +60,18 @@ class PolyominoTransformer2:
         self,
     ) -> None:
         """ """
+        updated_polyomino_mapping = {}
+
         for i, (polyomino, (polyomino_index, polyomino_properties)) in enumerate(zip(self.polyominos, self.polyomino_mapping.items())):
-            if polyomino_properties.rotation_correction != 0:
+            if "rotation_correction" in polyomino_properties and polyomino_properties.rotation_correction != 0:
                 rotated_polyomino = [[-y * polyomino_properties.rotation_correction, x * polyomino_properties.rotation_correction] for [x, y] in polyomino]
                 
                 self.polyominos[i] = rotated_polyomino
-                self.polyomino_mapping[tuple(tuple(block) for block in rotated_polyomino)] = self.polyomino_mapping.pop(polyomino_index)
+                updated_polyomino_mapping[tuple(tuple(block) for block in rotated_polyomino)] = polyomino_properties
+            else:
+                updated_polyomino_mapping[tuple(tuple(block) for block in polyomino)] = polyomino_properties
+
+        self.polyomino_mapping = updated_polyomino_mapping
 
         self._sort()
     
@@ -73,12 +79,18 @@ class PolyominoTransformer2:
         self,
     ) -> None:
         """ """
+        updated_polyomino_mapping = {}
+
         for i, (polyomino, (polyomino_index, polyomino_properties)) in enumerate(zip(self.polyominos, self.polyomino_mapping.items())):
-            if any(x != 0 for x in polyomino_properties.position_correction):
+            if "position_correction" in polyomino_properties and any(x != 0 for x in polyomino_properties.position_correction):
                 shifted_polyomino = [[x + polyomino_properties.position_correction[0], y + polyomino_properties.position_correction[1]] for [x, y] in polyomino]
 
                 self.polyominos[i] = shifted_polyomino
-                self.polyomino_mapping[tuple(tuple(block) for block in shifted_polyomino)] = self.polyomino_mapping.pop(polyomino_index)
+                updated_polyomino_mapping[tuple(tuple(block) for block in shifted_polyomino)] = polyomino_properties
+            else:
+                updated_polyomino_mapping[tuple(tuple(block) for block in polyomino)] = polyomino_properties
+
+        self.polyomino_mapping = updated_polyomino_mapping
 
         self._sort()
     
@@ -108,24 +120,24 @@ class PolyominoTransformer2:
         """ """
         
 
-        for polyomino, (polyomino_index, polyomino_properties) in zip(self.polyominos, self.polyomino_mapping.items()):
-            print(polyomino)
-            print(polyomino_index)
-            print(polyomino_properties.name)
-            print()
+        # for polyomino, (polyomino_index, polyomino_properties) in zip(self.polyominos, self.polyomino_mapping.items()):
+        #     print(polyomino)
+        #     print(polyomino_index)
+        #     print(polyomino_properties.name)
+        #     print()
 
 
         self._rotate()
         self._shift()
         self._mirror_horizontally()
 
-        print('\n'*5)
+        # print('\n'*5)
 
-        for polyomino, (polyomino_index, polyomino_properties) in zip(self.polyominos, self.polyomino_mapping.items()):
-            print(polyomino)
-            print(polyomino_index)
-            print(polyomino_properties.name)
-            print()
+        # for polyomino, (polyomino_index, polyomino_properties) in zip(self.polyominos, self.polyomino_mapping.items()):
+        #     print(polyomino)
+        #     print(polyomino_index)
+        #     print(polyomino_properties.name)
+        #     print()
         
         return self.polyominos, self.polyomino_mapping
 
@@ -259,7 +271,7 @@ class PolyominoTransformer:
                 coordinate=coordinate, polyomino_mapping=self.polyomino_mapping
             )
 
-            if polyomino_properties.rotation_type != 0:
+            if polyomino_properties.rotation_type != "matrix_rotation":
                 all_new_coordinates.append(coordinate)
                 continue
 
