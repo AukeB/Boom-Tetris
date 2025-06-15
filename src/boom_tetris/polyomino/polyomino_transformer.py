@@ -23,7 +23,9 @@ class PolyominoTransformer:
         self,
     ) -> dict:
         """ """
-        if self.polyomino_size == 4:
+        if self.polyomino_size == 3:
+            pass
+        elif self.polyomino_size == 4:
             with open(TETROMINO_PROPERTIES_RELATIVE_FILE_PATH, "r") as file:
                 polyomino_mapping = json.load(file)
 
@@ -40,7 +42,9 @@ class PolyominoTransformer:
                     polyomino_mapping[polyomino_index]
                 )
 
-        return polyomino_mapping
+            return polyomino_mapping
+        else:
+            pass
 
     def _sort(
         self,
@@ -153,8 +157,12 @@ class PolyominoTransformer:
 
     def execute(self):
         """ """
-        self._rotate()
-        self._shift()
-        self._mirror_horizontally()
+        if self.polyomino_size == 4:
+            self._rotate()
+            self._shift()
+            self._mirror_horizontally()
 
-        return self.polyominos, self.polyomino_mapping
+            return self.polyominos, self.polyomino_mapping
+
+        else:
+            return self.polyominos
