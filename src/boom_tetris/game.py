@@ -6,6 +6,11 @@ from src.boom_tetris.board import Board
 from src.boom_tetris.polyomino.polyomino import Polyomino
 from src.boom_tetris.renderer import Renderer
 from src.boom_tetris.config.config import Config
+from src.boom_tetris.utils.game_utils import (
+    convert_drop_frames_to_time,
+    compute_first_level_advancement,
+    get_frames_per_cell,
+)
 from src.boom_tetris.configs.controls import SINGLE_PLAYER_CONTROLS as KEY
 
 
@@ -28,6 +33,24 @@ class Game:
         self.next_polyomino = Polyomino(
             self.config.POLYOMINO.SPAWN_POSITION_NEXT[0],
             self.config.POLYOMINO.SPAWN_POSITION_NEXT[1],
+        )
+
+        self.level = 0
+        self.leveled_up = False
+        self.line_threshold_first_level_advancement = compute_first_level_advancement(
+            self.level
+        )
+
+        self.line_counter = 0
+        self.last_drop_time = pg.time.get_ticks()
+
+        frames_per_cell = get_frames_per_cell(
+            self.level, self.config.GENERAL.NTSC_DROP_FRAMES
+        )
+
+        self.drop_interval = convert_drop_frames_to_time(
+            framerate=self.config.GENERAL.NTSC_FRAMERATE,
+            frames_per_cell=frames_per_cell,
         )
 
     def handle_controls(self, event) -> None:
@@ -92,9 +115,35 @@ class Game:
 
         return True
 
+    def update_level(self, lines_cleared: int) -> None:
+        """ """
+        if not self.leveled_up:
+            if (
+                self.line_counter + lines_cleared
+                >= self.line_threshold_first_level_advancement
+            ):
+                self.level += 1
+                self.leveled_up = True
+        else:
+            if (self.line_counter + lines_cleared) // 10 != self.line_counter // 10:
+                self.level += 1
+
     def get_next_polyomino(self):
+        """ """
         self.board.place(self.polyomino)
-        self.board.clear_lines()
+
+        lines_cleared = self.board.clear_lines()
+
+        self.update_level(lines_cleared=lines_cleared)
+
+        self.line_counter += lines_cleared
+
+        if self.level in self.config.GENERAL.NTSC_DROP_FRAMES:
+            self.drop_interval = convert_drop_frames_to_time(
+                framerate=self.config.GENERAL.NTSC_FRAMERATE,
+                frames_per_cell=self.config.GENERAL.NTSC_DROP_FRAMES[self.level],
+            )
+
         self.next_polyomino.x, self.next_polyomino.y = (
             self.config.POLYOMINO.SPAWN_POSITION[0],
             self.config.POLYOMINO.SPAWN_POSITION[1],
@@ -104,6 +153,19 @@ class Game:
             self.config.POLYOMINO.SPAWN_POSITION_NEXT[0],
             self.config.POLYOMINO.SPAWN_POSITION_NEXT[1],
         )
+
+    def handle_timers(self):
+        """ """
+        current_time = pg.time.get_ticks()
+
+        if current_time - self.last_drop_time >= self.drop_interval:
+            if not self.board.collision(
+                self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
+            ):
+                self.polyomino.y += self.config.DIRECTIONS.DOWN[1]
+            else:
+                self.get_next_polyomino()
+            self.last_drop_time = current_time
 
     def update(self) -> callable:
         """ """
@@ -116,5 +178,7 @@ class Game:
 
             self.renderer.draw_grid_lines(board=self.board)
             self.renderer.draw_block_hidden_rows(board=self.board)
+
+        self.handle_timers()
 
         return self.handle_events()

@@ -11,6 +11,13 @@ class StrictBaseModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+class General(StrictBaseModel):
+    NTSC_FRAMERATE: float
+    PAL_FRAMERATE: float
+    NTSC_DROP_FRAMES: dict[int, int]
+    PAL_DROP_FRAMES: dict[int, int]
+
+
 class Directions(StrictBaseModel):
     UP: list[IntDirection, IntDirection]
     DOWN: list[IntDirection, IntDirection]
@@ -81,3 +88,4 @@ class ConfigModel(StrictBaseModel):
     BOARD: Board
     POLYOMINO: Polyomino
     DIRECTIONS: Directions
+    GENERAL: General

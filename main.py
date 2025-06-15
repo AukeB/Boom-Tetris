@@ -45,9 +45,10 @@ Todo:
     Block namedtuple uit code halen                                         DONE
 - Hidden rows toevoegen                                                     DONE
 - Board resizen met hidden rows en hidden rows blokkeren                    DONE
+- New line toevoegen met ruamel package na elke level1 dict item            DONE
 - PolyominoTranformer class optimaliseren
 - Bug fixen met kleine ruimte over als board_size 30 rows heeft
-- New line toevoegen met ruamel package na elke level1 dict item            
+
 
 
     
