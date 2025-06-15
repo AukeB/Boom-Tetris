@@ -4,18 +4,15 @@ import random as rd
 
 from src.boom_tetris.config.config import Config
 from src.boom_tetris.constants import MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH
-from src.boom_tetris.polyomino.polyomino_transformer import PolyominoTransformer, PolyominoTransformer2
+from src.boom_tetris.polyomino.polyomino_transformer import PolyominoTransformer
 
 config_main = Config.load_config(
     file_path=MAIN_CONFIG_AUGMENTED_RELATIVE_FILE_PATH, validate=False
 )
 
-#polyomino_transformer = PolyominoTransformer(config=config_main)
+polyomino_transformer = PolyominoTransformer(config=config_main)
+ALL_POLYOMINOS, POLYOMINO_MAPPING = polyomino_transformer.execute()
 
-#ALL_POLYOMINOS, POLYOMINO_MAPPING = polyomino_transformer.execute()
-
-polyomino_transformer_2 = PolyominoTransformer2(config=config_main)
-ALL_POLYOMINOS2, POLYOMINO_MAPPING2 = polyomino_transformer_2.execute()
 
 class Polyomino:
     """ """
@@ -25,11 +22,12 @@ class Polyomino:
         self.x = x
         self.y = y
 
-        polyomino_index = rd.randint(0, len(ALL_POLYOMINOS2) - 1)
+        polyomino_index = rd.randint(0, len(ALL_POLYOMINOS) - 1)
 
-        self.blocks = ALL_POLYOMINOS2[polyomino_index]
-        self.properties = POLYOMINO_MAPPING2[tuple(tuple(block) for block in self.blocks)]
-        print(self.properties.name)
+        self.blocks = ALL_POLYOMINOS[polyomino_index]
+        self.properties = POLYOMINO_MAPPING[
+            tuple(tuple(block) for block in self.blocks)
+        ]
         self.rotation_type = self.properties.rotation_type
 
         if self.rotation_type == "predefined":
@@ -40,7 +38,6 @@ class Polyomino:
     def rotate(self, direction: int) -> None:
         """ """
         if self.rotation_type == "predefined":
-            # Ask chatgpt if this double code can be avoided somehow.
             self.rotation_index = (self.rotation_index + direction) % len(
                 self.rotations
             )

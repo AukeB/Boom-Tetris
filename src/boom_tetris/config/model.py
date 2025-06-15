@@ -24,6 +24,8 @@ class Polyomino(StrictBaseModel):
     COLOR: list[UInt8, UInt8, UInt8]
     SIZE: int
     ALL_SHAPES: list | None = None
+    SPAWN_POSITION: list[int, int] | None = None
+    SPAWN_POSITION_NEXT: list[int, int] | None = None
 
 
 class BoardGridLines(StrictBaseModel):

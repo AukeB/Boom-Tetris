@@ -21,18 +21,16 @@ class Game:
         self.renderer = Renderer(config=self.config)
         self.board = Board(config=self.config)
 
-        self.polyomino = Polyomino(
-            self.board.dimensions.cols // 2, self.config.BOARD.DIMENSIONS.ROWS_HIDDEN
-        )  # Probably correct. # Move to config. or compute it based on config parameters?
-        self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)
+        self.polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION[0], self.config.POLYOMINO.SPAWN_POSITION[1])
+        self.next_polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION_NEXT[0], self.config.POLYOMINO.SPAWN_POSITION_NEXT[1])
 
     def handle_controls(self, event) -> None:
         """ """
         if event.type == pg.KEYDOWN:
             # Horizontal and vertical movement.
-            if event.key == KEY.UP:  # and not self.board.collision(
-                #     self.polyomino, move_direction=self.config.DIRECTIONS.UP
-                # ):
+            if event.key == KEY.UP and not self.board.collision(
+                self.polyomino, move_direction=self.config.DIRECTIONS.UP
+            ):
                 self.polyomino.y += self.config.DIRECTIONS.UP[1]
 
             if event.key == KEY.DOWN:
@@ -91,12 +89,9 @@ class Game:
     def get_next_polyomino(self):
         self.board.place(self.polyomino)
         self.board.clear_lines()
-        self.next_polyomino.x, self.next_polyomino.y = (
-            self.board.dimensions.cols // 2,
-            self.config.BOARD.DIMENSIONS.ROWS_HIDDEN,
-        )
+        self.next_polyomino.x, self.next_polyomino.y = self.config.POLYOMINO.SPAWN_POSITION[0], self.config.POLYOMINO.SPAWN_POSITION[1]
         self.polyomino = self.next_polyomino
-        self.next_polyomino = Polyomino(self.board.dimensions.cols + 1, 1)
+        self.next_polyomino = Polyomino(self.config.POLYOMINO.SPAWN_POSITION_NEXT[0], self.config.POLYOMINO.SPAWN_POSITION_NEXT[1])
 
     def update(self) -> callable:
         """ """
@@ -108,5 +103,6 @@ class Game:
             )
 
             self.renderer.draw_grid_lines(board=self.board)
+            self.renderer.draw_block_hidden_rows(board=self.board)
 
         return self.handle_events()

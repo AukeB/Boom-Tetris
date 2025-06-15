@@ -19,9 +19,10 @@ class Board:
         self.config = config
 
         self.dimensions = Dimensions(
-            rows=self.config.BOARD.DIMENSIONS.ROWS_TOTAL,  # Needs to change.
+            rows=self.config.BOARD.DIMENSIONS.ROWS_TOTAL,
             cols=self.config.BOARD.DIMENSIONS.COLS,
         )
+
         self.rect = pg.Rect(
             self.config.BOARD.RECT.LEFT,
             self.config.BOARD.RECT.TOP,
@@ -41,6 +42,18 @@ class Board:
             self.config.BOARD.CELL.HEIGHT,
         )
 
+        hidden_rows_ratio = (
+            self.config.BOARD.DIMENSIONS.ROWS_HIDDEN
+            / self.config.BOARD.DIMENSIONS.ROWS_TOTAL
+        )
+
+        self.hidden_rows_rect = pg.Rect(
+            self.config.BOARD.RECT.LEFT,
+            self.config.BOARD.RECT.TOP,
+            self.config.BOARD.RECT.WIDTH,
+            self.config.BOARD.RECT.HEIGHT * hidden_rows_ratio,
+        )
+
     def collision(
         self,
         polyomino: Polyomino,
@@ -54,20 +67,16 @@ class Board:
                 y=polyomino.y + block[1] + move_direction[1],
             )
 
-            # Collision with board edge.
             collision: bool = (
                 boundary_position.x < 0
                 or boundary_position.x >= self.dimensions.cols
-                # or boundary_position.y < 0
+                or boundary_position.y < 0
                 or boundary_position.y >= self.dimensions.rows
             )
 
             if collision:
                 return True
 
-            # Collision with other pieces.
-            # print(boundary_position.y, boundary_position.x)
-            # Make board 23 height and only display 20 rows to fix issue.
             if self.cells[boundary_position.y][boundary_position.x]:
                 return True
 

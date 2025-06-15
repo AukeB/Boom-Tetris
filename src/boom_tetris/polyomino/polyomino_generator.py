@@ -1,5 +1,6 @@
 """ """
 
+
 class PolyominoGenerator:
     """ """
 
@@ -57,7 +58,7 @@ class PolyominoGenerator:
                 for coordinates in rotation_invariant_coordinates
             ):
                 return
-            
+
             normalized_coordinates = tuple(sorted(normalized_coordinates))
 
             self.unique_coordinates.add(normalized_coordinates)

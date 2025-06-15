@@ -40,19 +40,11 @@ Todo:
 - Fixen Pydantic parameters meegeven die niet in BaseModel staat            DONE
 - Board size computen gebaseerd op window size                              DONE
 - Implement grid_lines                                                      DONE
-- rotate en shift functies zijn geschreven, nu implementeren voor alle
-    tetrominos. Nog even kijken hoe te implementeren als de lineaire shift
-    die ervoor zorgt dat een blok in het midden van het board spawnt, maar
-    dan nog niet de rotatie goed gaat (voor 3 van de 7 pieces), hoe dit dan 
-    op te lossen, waarschijnlijk door de spawn positie iets te verschuiven
-    en dan alle andere coordinate van de blokken van de tetromino evenver
-    naar de andere kant verschuiven.
-- Nog ene keer PolyominoTranformer class doorlopen
-    Coordinate, coordinates, all_coordinates betere namen geven
-    Nog een keer tuple vs lists analyseren (misschien in readme zetten)
+- Juiste rotaties alle tetrominos implementeren                             DONE
+- Juiste spawn positions fixen voor alle tetrominos                         DONE
+- PolyominoTranformer class optimaliseren
     Block namedtuple uit code halen                                         DONE
-- Maak board 22 hoog ipv 20
-    Hidden rows toevoegen                                                   DONE
+- Hidden rows toevoegen                                                     DONE
     Nadenken over hoe dit precies in code te zetten                         
     Issue fixen met kleine ruimte over als board_size 30 rows heeft
 - New line toevoegen met ruamel package na elke level1 dict item              

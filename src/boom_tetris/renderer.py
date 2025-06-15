@@ -39,6 +39,7 @@ class Renderer:
 
     def draw_board(self, board: Board) -> None:
         """ """
+        # Draw the background of the board.
         pg.draw.rect(
             surface=self.surface,
             color=self.config.BOARD.COLOR.BACKGROUND,
@@ -47,6 +48,7 @@ class Renderer:
 
         cell = board.cell_rect.copy()
 
+        # Draw the place pieces in the board.
         for row, col in board:
             if board.cells[row][col]:
                 cell.y = board.rect.y + board.cell_rect.height * row
@@ -77,10 +79,30 @@ class Renderer:
                 x = board.rect.x + col * board.cell_rect.width
                 start_pos = (x, board.rect.y)
                 end_pos = (x, board.rect.y + board.rect.height)
-                pg.draw.line(self.surface, self.config.BOARD.GRID_LINES.LINE_COLOR, start_pos, end_pos, self.config.BOARD.GRID_LINES.LINE_WIDTH)
+                pg.draw.line(
+                    self.surface,
+                    self.config.BOARD.GRID_LINES.LINE_COLOR,
+                    start_pos,
+                    end_pos,
+                    self.config.BOARD.GRID_LINES.LINE_WIDTH,
+                )
 
-            for row in range(1, board.dimensions.rows):
+            for row in range(self.config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1, board.dimensions.rows):
                 y = board.rect.y + row * board.cell_rect.height
                 start_pos = (board.rect.x, y)
                 end_pos = (board.rect.x + board.rect.width, y)
-                pg.draw.line(self.surface, self.config.BOARD.GRID_LINES.LINE_COLOR, start_pos, end_pos, self.config.BOARD.GRID_LINES.LINE_WIDTH)
+                pg.draw.line(
+                    self.surface,
+                    self.config.BOARD.GRID_LINES.LINE_COLOR,
+                    start_pos,
+                    end_pos,
+                    self.config.BOARD.GRID_LINES.LINE_WIDTH,
+                )
+
+    def draw_block_hidden_rows(self, board: Board) -> None:
+        """ """
+        pg.draw.rect(
+            surface=self.surface,
+            color=self.background_color,
+            rect=board.hidden_rows_rect,
+        )

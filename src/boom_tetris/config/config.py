@@ -58,6 +58,17 @@ class Config:
         cell_width = board_width / config.BOARD.DIMENSIONS.COLS
         cell_height = board_height / rows_total
 
+        # Computations so that we can block the hidden rows.
+        scale_ratio = rows_total / config.BOARD.DIMENSIONS.ROWS
+
+        cell_height *= scale_ratio
+        cell_width *= scale_ratio
+
+        board_top -= config.BOARD.DIMENSIONS.ROWS_HIDDEN * cell_height
+        board_height *= scale_ratio
+        board_width *= scale_ratio
+        board_left = window_horizontal_mid - board_width / 2
+
         # Adding computed parameters back to config.
         config.BOARD.DIMENSIONS.ROWS_TOTAL = rows_total
 
@@ -69,6 +80,10 @@ class Config:
         }
 
         config.BOARD.CELL = {"WIDTH": cell_width, "HEIGHT": cell_height}
+
+        # Add other parameters.
+        config.POLYOMINO.SPAWN_POSITION = [config.BOARD.DIMENSIONS.COLS // 2, config.BOARD.DIMENSIONS.ROWS_HIDDEN]
+        config.POLYOMINO.SPAWN_POSITION_NEXT = [config.BOARD.DIMENSIONS.COLS + 3, config.BOARD.DIMENSIONS.ROWS_HIDDEN + 1]
 
         return config
 
