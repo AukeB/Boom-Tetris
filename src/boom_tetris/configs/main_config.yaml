@@ -36,6 +36,14 @@ DAS:
   AUTO_REPEAT_RATE_NTSC: 6
   AUTO_REPEAT_RATE_PAL: 4
 
+SCORE:
+  SINGLE: 40
+  DOUBLE_MULTIPLIER: 2.5 # A double is worth 2.5 times a single.
+  TRIPLE_MULTIPLIER: 3 # A triple is worth 3 times a double.
+  TETRIS_MULTIPLIER: 4 # A tetris is worth 4 times a triple.
+  SOFT_DROP_PER_LINE: 1
+  HARD_DROP_PER_LINE: 1
+
 GENERAL:
   START_LEVEL: 18
   SOFT_DROP_SPEED: 0.5 # Units: Gravity. Definition of gravity: Gravity is expressed in unit G, where 1G = 1 cell per frame, and 0.1G = 1 cell per 10 frames

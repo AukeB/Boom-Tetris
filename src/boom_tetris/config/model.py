@@ -21,6 +21,15 @@ class General(StrictBaseModel):
     PAL_DROP_FRAMES: dict[int, int]
 
 
+class Score(StrictBaseModel):
+    SINGLE: int
+    DOUBLE_MULTIPLIER: float
+    TRIPLE_MULTIPLIER: float
+    TETRIS_MULTIPLIER: float
+    SOFT_DROP_PER_LINE: int
+    HARD_DROP_PER_LINE: int
+
+
 class Das(StrictBaseModel):
     DIRECTIONS: list[str, str, str]
     DAS_DELAY_NTSC: int
@@ -100,4 +109,5 @@ class ConfigModel(StrictBaseModel):
     POLYOMINO: Polyomino
     DIRECTIONS: Directions
     DAS: Das
+    SCORE: Score
     GENERAL: General

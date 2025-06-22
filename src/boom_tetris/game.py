@@ -1,5 +1,6 @@
 """ " """
 
+import os
 import pygame as pg
 
 from src.boom_tetris.board import Board
@@ -78,6 +79,10 @@ class Game:
         self.line_counter = 0
         self.last_drop_time = pg.time.get_ticks()
 
+        # Related to scoring
+        self.score = 0
+        self.score_dict = self.initialize_scoring_dictionary()
+
         # Probably best to merge these two functions.
         frames_per_cell = get_frames_per_cell(
             self.level, self.config.GENERAL.NTSC_DROP_FRAMES
@@ -87,6 +92,22 @@ class Game:
             framerate=self.config.GENERAL.NTSC_FRAMERATE,
             frames_per_cell=frames_per_cell,
         )
+
+    def initialize_scoring_dictionary(self) -> dict:
+        """ """
+        single_points = self.config.SCORE.SINGLE
+        double_points = single_points * self.config.SCORE.DOUBLE_MULTIPLIER
+        triple_points = double_points * self.config.SCORE.TRIPLE_MULTIPLIER
+        tetris_points = triple_points * self.config.SCORE.TETRIS_MULTIPLIER
+
+        score_dict = {
+            1: single_points,
+            2: double_points,
+            3: triple_points,
+            4: tetris_points,
+        }
+
+        return score_dict
 
     def update_key_hold(self, direction: str, is_pressed: bool) -> None:
         """ """
@@ -168,7 +189,6 @@ class Game:
                 self.get_next_polyomino()
 
         elif event.type == pg.KEYUP:
-            print()
             if event.key == KEY.LEFT:
                 self.update_key_hold("LEFT", is_pressed=False)
             elif event.key == KEY.RIGHT:
@@ -205,6 +225,11 @@ class Game:
 
         self.line_counter += lines_cleared
 
+    def update_score(self, level: int, lines_cleared: int):
+        """ """
+        score_to_add = (level + 1) * self.score_dict[lines_cleared]
+        self.score += score_to_add
+
     def get_next_polyomino(self):
         """ """
         # Place the polyomino on the board.
@@ -212,7 +237,15 @@ class Game:
 
         # Possible update line clear, level and drop speed.
         lines_cleared = self.board.clear_lines()
-        self.update_lines_and_level(lines_cleared=lines_cleared)
+
+        if lines_cleared:
+            self.update_score(level=self.level, lines_cleared=lines_cleared)
+            self.update_lines_and_level(lines_cleared=lines_cleared)
+
+        os.system("clear")
+        print(f"{self.score=}")
+        print(f"{self.line_counter=}")
+        print(f"{self.level=}")
 
         if self.level in self.config.GENERAL.NTSC_DROP_FRAMES:
             self.drop_interval = convert_drop_frames_to_time(
