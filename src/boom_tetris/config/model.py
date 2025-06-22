@@ -12,6 +12,8 @@ class StrictBaseModel(BaseModel):
 
 
 class General(StrictBaseModel):
+    START_LEVEL: int
+    SOFT_DROP_SPEED: float
     NTSC_FRAMERATE: float
     PAL_FRAMERATE: float
     NTSC_DROP_FRAMES: dict[int, int]

@@ -11,6 +11,7 @@ from src.boom_tetris.utils.game_utils import (
     compute_first_level_advancement,
     get_frames_per_cell,
     frames2ms,
+    gravity2ms,
 )
 from src.boom_tetris.configs.controls import SINGLE_PLAYER_CONTROLS as KEY
 
@@ -40,16 +41,30 @@ class Game:
         # Related to DAS (Delayed Auto Shift).
         self.clock = pg.time.Clock()
         self.frame_rate = self.config.GENERAL.NTSC_FRAMERATE
-        self.das_delay = frames2ms(self.frame_rate, self.config.DAS.DAS_DELAY_NTSC)
-        self.auto_repeat_rate = frames2ms(
-            self.frame_rate, self.config.DAS.AUTO_REPEAT_RATE_NTSC
-        )
         self.das_directions = self.config.DAS.DIRECTIONS
+
         self.key_pressed = {key: False for key in self.das_directions}
         self.hold_timer = {key: 0 for key in self.das_directions}
 
+        self.soft_drop_speed = gravity2ms(
+            self.frame_rate, self.config.GENERAL.SOFT_DROP_SPEED
+        )
+        self.das_delay = {
+            direction: frames2ms(self.frame_rate, self.config.DAS.DAS_DELAY_NTSC)
+            for direction in self.das_directions
+        }
+
+        self.auto_repeat_rate = {
+            direction: frames2ms(self.frame_rate, self.config.DAS.AUTO_REPEAT_RATE_NTSC)
+            for direction in self.das_directions
+        }
+
+        # Manual correction for soft drop speed.
+        self.das_delay["DOWN"] = self.soft_drop_speed
+        self.auto_repeat_rate["DOWN"] = self.soft_drop_speed
+
         # Related to lines cleared and level.
-        self.level = 0
+        self.level = self.config.GENERAL.START_LEVEL
         self.leveled_up = False
         self.line_threshold_first_level_advancement = compute_first_level_advancement(
             self.level
@@ -68,13 +83,18 @@ class Game:
             frames_per_cell=frames_per_cell,
         )
 
+    def update_key_hold(self, direction: str, is_pressed: bool) -> None:
+        """ """
+        self.key_pressed[direction] = is_pressed
+        self.hold_timer[direction] = 0
+
     def update_das(self, dt: int) -> None:
         """ """
         for direction in self.das_directions:
             if self.key_pressed[direction]:
                 self.hold_timer[direction] += dt
 
-                if self.hold_timer[direction] > self.das_delay:
+                if self.hold_timer[direction] > self.das_delay[direction]:
                     move_direction = getattr(self.config.DIRECTIONS, direction)
                     if not self.board.collision(self.polyomino, move_direction):
                         if direction == "LEFT":
@@ -85,40 +105,36 @@ class Game:
                             self.polyomino.y += move_direction[1]
 
                         self.hold_timer[direction] = (
-                            self.das_delay - self.auto_repeat_rate
+                            self.das_delay[direction] - self.auto_repeat_rate[direction]
                         )
 
                     else:
                         if direction == "DOWN":
                             self.get_next_polyomino()
-                            self.key_pressed["DOWN"] = False
-                            self.hold_timer["DOWN"] = 0
-                else:
-                    self.hold_timer[direction] = 0
+                            self.update_key_hold(direction, is_pressed=True)
+            else:
+                self.hold_timer[direction] = 0
 
     def handle_controls(self, event) -> None:
         """ """
         if event.type == pg.KEYDOWN:
             # Horizontal and vertical movement.
             if event.key == KEY.LEFT:
-                self.key_pressed["LEFT"] = True
-                self.hold_timer["LEFT"] = 0
+                self.update_key_hold("LEFT", is_pressed=True)
                 if not self.board.collision(
                     self.polyomino, move_direction=self.config.DIRECTIONS.LEFT
                 ):
                     self.polyomino.x += self.config.DIRECTIONS.LEFT[0]
 
             if event.key == KEY.RIGHT:
-                self.key_pressed["RIGHT"] = True
-                self.hold_timer["RIGHT"] = 0
+                self.update_key_hold("RIGHT", is_pressed=True)
                 if not self.board.collision(
                     self.polyomino, move_direction=self.config.DIRECTIONS.RIGHT
                 ):
                     self.polyomino.x += self.config.DIRECTIONS.RIGHT[0]
 
             if event.key == KEY.DOWN:
-                self.key_pressed["DOWN"] = True
-                self.hold_timer["DOWN"] = 0
+                self.update_key_hold("DOWN", is_pressed=True)
                 if not self.board.collision(
                     self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
                 ):
@@ -149,14 +165,11 @@ class Game:
 
         elif event.type == pg.KEYUP:
             if event.key == KEY.LEFT:
-                self.key_pressed["LEFT"] = False
-                self.hold_timer["LEFT"] = 0
+                self.update_key_hold("LEFT", is_pressed=False)
             elif event.key == KEY.RIGHT:
-                self.key_pressed["RIGHT"] = False
-                self.hold_timer["RIGHT"] = 0
+                self.update_key_hold("RIGHT", is_pressed=False)
             elif event.key == KEY.DOWN:
-                self.key_pressed["DOWN"] = False
-                self.hold_timer["DOWN"] = 0
+                self.update_key_hold("DOWN", is_pressed=False)
 
     def handle_events(self) -> bool:
         """ """
@@ -218,14 +231,15 @@ class Game:
         """ """
         current_time = pg.time.get_ticks()
 
-        if current_time - self.last_drop_time >= self.drop_interval:
-            if not self.board.collision(
-                self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
-            ):
-                self.polyomino.y += self.config.DIRECTIONS.DOWN[1]
-            else:
-                self.get_next_polyomino()
-            self.last_drop_time = current_time
+        if not self.key_pressed["DOWN"]:
+            if current_time - self.last_drop_time >= self.drop_interval:
+                if not self.board.collision(
+                    self.polyomino, move_direction=self.config.DIRECTIONS.DOWN
+                ):
+                    self.polyomino.y += self.config.DIRECTIONS.DOWN[1]
+                else:
+                    self.get_next_polyomino()
+                self.last_drop_time = current_time
 
     def update(self) -> callable:
         """ """
@@ -240,10 +254,6 @@ class Game:
             self.renderer.draw_block_hidden_rows(board=self.board)
 
         self.handle_timers()
-
-        dt = self.clock.get_rawtime()
-
-        self.update_das(dt)
-        self.clock.tick(self.frame_rate)
+        self.update_das(dt=self.clock.tick(self.frame_rate))
 
         return self.handle_events()

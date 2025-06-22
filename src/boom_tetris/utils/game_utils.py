@@ -22,3 +22,8 @@ def get_frames_per_cell(level: int, frames_per_cell: dict[int, int]) -> None:
 def frames2ms(frame_rate: float, frames: int) -> float:
     """ """
     return frames / frame_rate * 1000
+
+
+def gravity2ms(frame_rate: float, gravity: float) -> float:
+    """ """
+    return (1 / gravity) * 1000 / frame_rate

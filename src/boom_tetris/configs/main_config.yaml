@@ -36,7 +36,9 @@ DAS:
   AUTO_REPEAT_RATE_NTSC: 6
   AUTO_REPEAT_RATE_PAL: 4
 
-GENERAL:  
+GENERAL:
+  START_LEVEL: 15
+  SOFT_DROP_SPEED: 0.5 # Units: Gravity. Definition of gravity: Gravity is expressed in unit G, where 1G = 1 cell per frame, and 0.1G = 1 cell per 10 frames
   NTSC_FRAMERATE: 60.0988
   PAL_FRAMERATE: 50.0070
   NTSC_DROP_FRAMES:
