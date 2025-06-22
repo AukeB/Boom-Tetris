@@ -17,3 +17,8 @@ def get_frames_per_cell(level: int, frames_per_cell: dict[int, int]) -> None:
         level -= 1
 
     return frames_per_cell[level]
+
+
+def frames2ms(frame_rate: float, frames: int) -> float:
+    """ """
+    return frames / frame_rate * 1000

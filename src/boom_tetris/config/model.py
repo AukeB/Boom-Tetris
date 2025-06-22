@@ -18,6 +18,14 @@ class General(StrictBaseModel):
     PAL_DROP_FRAMES: dict[int, int]
 
 
+class Das(StrictBaseModel):
+    DIRECTIONS: list[str, str, str]
+    DAS_DELAY_NTSC: int
+    DAS_DELAY_PAL: int
+    AUTO_REPEAT_RATE_NTSC: int
+    AUTO_REPEAT_RATE_PAL: int
+
+
 class Directions(StrictBaseModel):
     UP: list[IntDirection, IntDirection]
     DOWN: list[IntDirection, IntDirection]
@@ -88,4 +96,5 @@ class ConfigModel(StrictBaseModel):
     BOARD: Board
     POLYOMINO: Polyomino
     DIRECTIONS: Directions
+    DAS: Das
     GENERAL: General
