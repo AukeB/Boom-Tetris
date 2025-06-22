@@ -63,6 +63,11 @@ class Game:
         self.das_delay["DOWN"] = self.soft_drop_speed
         self.auto_repeat_rate["DOWN"] = self.soft_drop_speed
 
+        # ARE delay (Automatic Repeat Entry delay)
+        self.are_delay = frames2ms(self.frame_rate, self.config.GENERAL.ARE_DELAY)
+        self.in_are = False
+        self.are_timer = 0
+
         # Related to lines cleared and level.
         self.level = self.config.GENERAL.START_LEVEL
         self.leveled_up = False
@@ -93,13 +98,11 @@ class Game:
         for direction in self.das_directions:
             if self.key_pressed[direction]:
                 self.hold_timer[direction] += dt
+                move_direction = getattr(self.config.DIRECTIONS, direction)
 
-                if self.hold_timer[direction] > self.das_delay[direction]:
-                    move_direction = getattr(self.config.DIRECTIONS, direction)
-                    if not self.board.collision(self.polyomino, move_direction):
-                        if direction == "LEFT":
-                            self.polyomino.x += move_direction[0]
-                        if direction == "RIGHT":
+                if not self.board.collision(self.polyomino, move_direction):
+                    if self.hold_timer[direction] > self.das_delay[direction]:
+                        if direction in ["LEFT", "RIGHT"]:
                             self.polyomino.x += move_direction[0]
                         if direction == "DOWN":
                             self.polyomino.y += move_direction[1]
@@ -107,11 +110,12 @@ class Game:
                         self.hold_timer[direction] = (
                             self.das_delay[direction] - self.auto_repeat_rate[direction]
                         )
-
-                    else:
-                        if direction == "DOWN":
-                            self.get_next_polyomino()
-                            self.update_key_hold(direction, is_pressed=True)
+                else:
+                    if direction in ["LEFT", "RIGHT"]:
+                        self.hold_timer[direction] = self.das_delay[direction] + 1
+                    elif direction == "DOWN":
+                        self.get_next_polyomino()
+                        self.update_key_hold(direction, is_pressed=True)
             else:
                 self.hold_timer[direction] = 0
 
@@ -164,6 +168,7 @@ class Game:
                 self.get_next_polyomino()
 
         elif event.type == pg.KEYUP:
+            print()
             if event.key == KEY.LEFT:
                 self.update_key_hold("LEFT", is_pressed=False)
             elif event.key == KEY.RIGHT:
